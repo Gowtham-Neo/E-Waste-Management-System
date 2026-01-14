@@ -1,0 +1,12 @@
+package com.ey.enums;
+
+public enum NotificationType {
+
+	PICKUP_ASSIGNED,
+	STATUS_UPDATED,
+	PRODUCT_READY,
+	ORDER_APPROVED,
+	ORDER_DISPATCHED,
+	CERTIFICATE_ISSUED
+
+}
