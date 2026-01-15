@@ -27,9 +27,22 @@ public class Recycler {
 	
 	private String password;
 	private RecyclerStatus status;
+	private String mobileNumber;
+	
+	
 	
 	@OneToMany(mappedBy="recycler")
 	private List<Collector> collectors;
+
+	
+	
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
 
 	public Long getId() {
 		return id;

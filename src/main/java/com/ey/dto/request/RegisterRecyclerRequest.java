@@ -2,7 +2,7 @@ package com.ey.dto.request;
 
 import jakarta.persistence.Column;
 
-public class RegisterRecyclerReqeuest {
+public class RegisterRecyclerRequest {
 
 	private String organizationName;
 	@Column(unique = true)
@@ -11,6 +11,16 @@ public class RegisterRecyclerReqeuest {
 	private String email;
 	
 	private String password;
+	
+	private String mobileNumber;
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
 
 	public String getOrganizationName() {
 		return organizationName;

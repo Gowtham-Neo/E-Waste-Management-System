@@ -5,19 +5,19 @@ import jakarta.persistence.Column;
 public class RegisterCollectorRequest {
 
 	@Column(unique=true, nullable=false)
-	private String username;
+	private String email;
 	private String password;
 	
-	private String phone;
+	private String mobileNumber;
 	
-	private String vehiceNumber;
+	private String vehicleNumber;
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String username) {
+		this.email = username;
 	}
 
 	public String getPassword() {
@@ -28,20 +28,20 @@ public class RegisterCollectorRequest {
 		this.password = password;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 
-	public String getVehiceNumber() {
-		return vehiceNumber;
+	public String getVehicleNumber() {
+		return vehicleNumber;
 	}
 
-	public void setVehiceNumber(String vehiceNumber) {
-		this.vehiceNumber = vehiceNumber;
+	public void setVehicleNumber(String vehiceNumber) {
+		this.vehicleNumber = vehiceNumber;
 	}
 	
 	

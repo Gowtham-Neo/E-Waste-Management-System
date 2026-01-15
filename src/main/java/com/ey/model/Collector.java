@@ -14,12 +14,12 @@ public class Collector {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private String username;
+	private String email;
 	private String password;
 	
-	private String phone;
+	private String mobileNumber;
 	
-	private String vehiceNumber;
+	private String vehicleNumber;
 	
 	@ManyToOne
 	@JoinColumn(name="recyclerId")
@@ -35,6 +35,14 @@ public class Collector {
 	
 	
 
+	public Recycler getRecycler() {
+		return recycler;
+	}
+
+	public void setRecycler(Recycler recycler) {
+		this.recycler = recycler;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -43,37 +51,37 @@ public class Collector {
 		this.password = password;
 	}
 
-	public String getUserName() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserName(String name) {
-		this.username = name;
+	public void setEmail(String name) {
+		this.email = name;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 	
 
-	public String getVehiceNumber() {
-		return vehiceNumber;
+	public String getVehicleNumber() {
+		return vehicleNumber;
 	}
 
-	public void setVehiceNumber(String vehiceNumber) {
-		this.vehiceNumber = vehiceNumber;
+	public void setVehicleNumber(String vehicleNumber) {
+		this.vehicleNumber = vehicleNumber;
 	}
 
-	public Collector(Long id, String name, String phone,String vehicleNumber) {
+	public Collector(Long id, String name, String mobileNumber,String vehicleNumber) {
 		super();
 		this.id = id;
-		this.username = name;
-		this.phone = phone;
-		this.vehiceNumber=vehicleNumber;
+		this.email = name;
+		this.mobileNumber = mobileNumber;
+		this.vehicleNumber=vehicleNumber;
 	}
 
 	public Collector() {
