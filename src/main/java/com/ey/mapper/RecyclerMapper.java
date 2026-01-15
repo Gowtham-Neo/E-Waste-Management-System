@@ -1,6 +1,6 @@
 package com.ey.mapper;
 
-import com.ey.dto.request.RegisterRecyclerRequest;
+import com.ey.dto.request.recycler.RegisterRecyclerRequest;
 import com.ey.dto.response.RegisterRecyclerResponse;
 import com.ey.dto.response.RegisterUserResponse;
 import com.ey.enums.RecyclerStatus;

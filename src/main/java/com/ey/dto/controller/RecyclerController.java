@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ey.dto.request.RegisterCollectorRequest;
-import com.ey.dto.request.RegisterRecyclerRequest;
+import com.ey.dto.request.recycler.RegisterRecyclerRequest;
 import com.ey.service.RecyclerService;
 
 @RestController

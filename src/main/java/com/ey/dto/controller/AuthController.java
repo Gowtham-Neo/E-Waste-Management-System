@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ey.dto.request.CollectorLoginRequest;
-import com.ey.dto.request.RecyclerLoginRequest;
-import com.ey.dto.request.UserLoginRequest;
+import com.ey.dto.request.recycler.RecyclerLoginRequest;
+import com.ey.dto.request.user.UserLoginRequest;
 import com.ey.dto.response.AuthResponse;
 import com.ey.service.AuthService;
 

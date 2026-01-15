@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ey.dto.request.RegisterUserRequest;
+import com.ey.dto.request.user.RegisterUserRequest;
 import com.ey.service.UserService;
 
 @RestController

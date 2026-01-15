@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.RegisterCollectorRequest;
-import com.ey.dto.request.RegisterRecyclerRequest;
+import com.ey.dto.request.recycler.RegisterRecyclerRequest;
 import com.ey.exception.UserNotFoundException;
 import com.ey.mapper.CollectorMapper;
 import com.ey.mapper.RecyclerMapper;

@@ -6,8 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.CollectorLoginRequest;
-import com.ey.dto.request.RecyclerLoginRequest;
-import com.ey.dto.request.UserLoginRequest;
+import com.ey.dto.request.recycler.RecyclerLoginRequest;
+import com.ey.dto.request.user.UserLoginRequest;
 import com.ey.dto.response.AuthResponse;
 import com.ey.model.Collector;
 import com.ey.model.Recycler;

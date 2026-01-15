@@ -1,4 +1,4 @@
-package com.ey.dto.request;
+package com.ey.dto.request.recycler;
 
 import java.time.LocalDate;
 

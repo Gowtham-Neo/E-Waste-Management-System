@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ey.dto.request.RegisterUserRequest;
+import com.ey.dto.request.user.RegisterUserRequest;
 import com.ey.mapper.UserMapper;
 import com.ey.model.User;
 import com.ey.repository.UserRepository;

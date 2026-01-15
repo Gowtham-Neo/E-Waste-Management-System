@@ -1,23 +1,26 @@
-package com.ey.dto.request;
-
-import com.ey.enums.Role;
+package com.ey.dto.request.recycler;
 
 import jakarta.persistence.Column;
 
-public class RegisterUserRequest {
+public class RegisterRecyclerRequest {
 
 	private String organizationName;
-	
-	private String name;
-	
-	@Column(nullable=false, unique=true)
+	@Column(unique = true)
+	private String licenceNumber;
+	@Column(unique = true)
 	private String email;
 	
 	private String password;
 	
 	private String mobileNumber;
-	
-	private Role role;
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
 
 	public String getOrganizationName() {
 		return organizationName;
@@ -27,12 +30,12 @@ public class RegisterUserRequest {
 		this.organizationName = organizationName;
 	}
 
-	public String getName() {
-		return name;
+	public String getLicenceNumber() {
+		return licenceNumber;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLicenceNumber(String licenceNumber) {
+		this.licenceNumber = licenceNumber;
 	}
 
 	public String getEmail() {
@@ -49,22 +52,6 @@ public class RegisterUserRequest {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
 	}
 	
 	

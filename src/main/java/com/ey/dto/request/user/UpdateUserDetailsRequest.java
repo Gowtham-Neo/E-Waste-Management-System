@@ -1,4 +1,4 @@
-package com.ey.dto.request;
+package com.ey.dto.request.user;
 
 import com.ey.enums.Role;
 
