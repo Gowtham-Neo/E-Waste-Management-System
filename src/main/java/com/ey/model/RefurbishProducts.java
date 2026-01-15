@@ -1,14 +1,16 @@
 package com.ey.model;
 
-import java.time.LocalDate;
 
 import com.ey.enums.ConditionGrading;
-import com.ey.enums.RequestStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class RefurbishProducts {
@@ -16,8 +18,7 @@ public class RefurbishProducts {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-		
-	private Long catagoryId;
+	
 	
 	private Double price;
 	
@@ -25,20 +26,16 @@ public class RefurbishProducts {
 	
 	private Integer quantity;
 
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inspectionId")
+    private Inspection inspection;
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getCatagoryId() {
-		return catagoryId;
-	}
-
-	public void setCatagoryId(Long catagoryId) {
-		this.catagoryId = catagoryId;
 	}
 
 	public Double getPrice() {
@@ -65,10 +62,9 @@ public class RefurbishProducts {
 		this.quantity = quantity;
 	}
 
-	public RefurbishProducts(Long id, Long catagoryId, Double price, ConditionGrading grade, Integer quantity) {
+	public RefurbishProducts(Long id,Double price, ConditionGrading grade, Integer quantity) {
 		super();
 		this.id = id;
-		this.catagoryId = catagoryId;
 		this.price = price;
 		this.grade = grade;
 		this.quantity = quantity;

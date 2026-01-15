@@ -1,27 +1,16 @@
-package com.ey.model;
-
-import java.util.List;
+package com.ey.dto.request;
 
 import com.ey.enums.Role;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
-@Entity
-public class User {
+public class RegisterUserRequest {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
 	private String organizationName;
 	
 	private String name;
 	
+	@Column(nullable=false, unique=true)
 	private String email;
 	
 	private String password;
@@ -29,38 +18,6 @@ public class User {
 	private String mobileNumber;
 	
 	private Role role;
-
-	@OneToMany(mappedBy = "user")
-    private List<DisposeRequest> disposalRequests;
-	
-	@OneToMany(mappedBy = "buyer")
-    private List<Order> orders;
-	
-	public User(Long id, String organizationName, String name, String email, String password, String mobileNumber,
-			Role role) {
-		super();
-		this.id = id;
-		this.organizationName = organizationName;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.mobileNumber = mobileNumber;
-		this.role = role;
-	}
-
-	
-	public User() {
-		super();
-	}
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getOrganizationName() {
 		return organizationName;

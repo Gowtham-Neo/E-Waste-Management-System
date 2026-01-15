@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Collector {
@@ -12,13 +14,16 @@ public class Collector {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private String name;
+	private String username;
+	private String password;
 	
 	private String phone;
 	
 	private String vehiceNumber;
 	
-	private Long recyclerId;
+	@ManyToOne
+	@JoinColumn(name="recyclerId")
+	private Recycler recycler;
 
 	public Long getId() {
 		return id;
@@ -27,13 +32,23 @@ public class Collector {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	
 
-	public String getName() {
-		return name;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getUserName() {
+		return username;
+	}
+
+	public void setUserName(String name) {
+		this.username = name;
 	}
 
 	public String getPhone() {
@@ -42,14 +57,6 @@ public class Collector {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public Long getRecyclerId() {
-		return recyclerId;
-	}
-
-	public void setRecyclerId(Long recyclerId) {
-		this.recyclerId = recyclerId;
 	}
 	
 
@@ -61,12 +68,11 @@ public class Collector {
 		this.vehiceNumber = vehiceNumber;
 	}
 
-	public Collector(Long id, String name, String phone, Long recyclerId,String vehicleNumber) {
+	public Collector(Long id, String name, String phone,String vehicleNumber) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.username = name;
 		this.phone = phone;
-		this.recyclerId = recyclerId;
 		this.vehiceNumber=vehicleNumber;
 	}
 

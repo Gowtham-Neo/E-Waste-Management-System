@@ -1,11 +1,16 @@
 package com.ey.model;
 
+import java.util.List;
+
+
 import com.ey.enums.RecyclerStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Recycler {
@@ -15,10 +20,16 @@ public class Recycler {
 	private Long id;
 	
 	private String organizationName;
-	
+	@Column(unique = true)
 	private String licenceNumber;
 	
+	private String email;
+	
+	private String password;
 	private RecyclerStatus status;
+	
+	@OneToMany(mappedBy="recycler")
+	private List<Collector> collectors;
 
 	public Long getId() {
 		return id;
@@ -26,6 +37,23 @@ public class Recycler {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getOrganizationName() {

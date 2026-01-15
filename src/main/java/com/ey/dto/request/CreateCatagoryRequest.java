@@ -1,19 +1,9 @@
-package com.ey.model;
+package com.ey.dto.request;
 
 import com.ey.enums.HazardLevel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+public class CreateCatagoryRequest {
 
-@Entity
-public class Catagory {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
 	private String name;
 	
 	private HazardLevel level;
@@ -21,14 +11,6 @@ public class Catagory {
 	private boolean refurbishable;
 	
 	private String handlingRules;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -61,25 +43,6 @@ public class Catagory {
 	public void setHandlingRules(String handlingRules) {
 		this.handlingRules = handlingRules;
 	}
-
-	public Catagory(Long id, String name, HazardLevel level, boolean refurbishable, String handlingRules) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.level = level;
-		this.refurbishable = refurbishable;
-		this.handlingRules = handlingRules;
-	}
-
-	public Catagory() {
-		super();
-	}
-
-	
-	
-	
-
-	
 	
 	
 }

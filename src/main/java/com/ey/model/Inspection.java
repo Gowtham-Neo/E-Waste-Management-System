@@ -7,19 +7,21 @@ import com.ey.enums.DisposalStatus;
 import com.ey.enums.FunctionalStatus;
 import com.ey.enums.ModelType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
-public class Insception {
+public class Inspection {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
-	private Long disposeRequestId;
 	
 	private String brand;
 	
@@ -41,6 +43,13 @@ public class Insception {
 	
 	private LocalDate inspectedAt;
 
+	@OneToOne
+    @JoinColumn(name = "disposalRequestId")
+    private DisposeRequest disposeRequest;
+	
+	@OneToOne(mappedBy = "inspection",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	private RefurbishProducts refurbishedProduct;
+	
 	public Long getId() {
 		return id;
 	}
@@ -49,13 +58,7 @@ public class Insception {
 		this.id = id;
 	}
 
-	public Long getDisposeRequestId() {
-		return disposeRequestId;
-	}
-
-	public void setDisposeRequestId(Long disposeRequestId) {
-		this.disposeRequestId = disposeRequestId;
-	}
+	
 
 	public String getBrand() {
 		return brand;
@@ -129,12 +132,11 @@ public class Insception {
 		this.inspectedAt = inspectedAt;
 	}
 
-	public Insception(Long id, Long disposeRequestId, String brand, String modelName, Integer manufatureYear,
+	public Inspection(Long id, String brand, String modelName, Integer manufatureYear,
 			ConditionGrading conditionGrade, FunctionalStatus status, Double estimatedRepairCost,
 			Double currentMarketValue, DisposalStatus decision, LocalDate inspectedAt) {
 		super();
 		this.id = id;
-		this.disposeRequestId = disposeRequestId;
 		this.brand = brand;
 		this.modelName = modelName;
 		this.manufatureYear = manufatureYear;
@@ -146,7 +148,7 @@ public class Insception {
 		this.inspectedAt = inspectedAt;
 	}
 
-	public Insception() {
+	public Inspection() {
 		super();
 	}
 
