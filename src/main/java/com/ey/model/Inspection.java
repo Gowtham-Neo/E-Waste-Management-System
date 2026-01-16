@@ -45,7 +45,7 @@ public class Inspection {
 
 	@OneToOne
     @JoinColumn(name = "disposalRequestId")
-    private DisposeRequest disposeRequest;
+    private Dispose disposeRequest;
 	
 	@OneToOne(mappedBy = "inspection",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private RefurbishProducts refurbishedProduct;
@@ -59,6 +59,23 @@ public class Inspection {
 	}
 
 	
+	
+
+	public Dispose getDisposeRequest() {
+		return disposeRequest;
+	}
+
+	public void setDisposeRequest(Dispose disposeRequest) {
+		this.disposeRequest = disposeRequest;
+	}
+
+	public ModelType getType() {
+		return type;
+	}
+
+	public void setType(ModelType type) {
+		this.type = type;
+	}
 
 	public String getBrand() {
 		return brand;

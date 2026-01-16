@@ -1,5 +1,6 @@
 package com.ey.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,11 +13,9 @@ import com.ey.security.JwtAuthenticationFilter;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtFilter;
+	@Autowired
+    private JwtAuthenticationFilter jwtFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -29,7 +28,6 @@ public class SecurityConfig {
         	.csrf(c->c.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/recycler/**").hasRole("RECYCLER")
                 .requestMatchers("/collector/**").hasRole("COLLECTOR")

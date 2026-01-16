@@ -1,5 +1,6 @@
 package com.ey.security;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.ey.exception.UserNotFoundException;
 import com.ey.model.Collector;
 import com.ey.model.Recycler;
-import com.ey.model.User;
 import com.ey.repository.CollectorRepository;
 import com.ey.repository.RecyclerRepository;
 import com.ey.repository.UserRepository;
@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String compoundKey) {
 
-        // compoundKey format: TYPE:identifier
+       
         String[] parts = compoundKey.split(":");
         String type = parts[0];
         String identifier = parts[1];
@@ -38,10 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         switch (type) {
 
             case "USER" -> {
-                User user = userRepo.findByEmail(identifier)
+                var user = userRepo.findByEmail(identifier)
                 						.orElseThrow(()->new UserNotFoundException("User not found"));
 
-                return org.springframework.security.core.userdetails.User
+                return User
                         .withUsername(compoundKey)
                         .password(user.getPassword())
                         .roles(user.getRole().name())
@@ -52,7 +52,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 Recycler recycler = recyclerRepo.findByEmail(identifier)
                         .orElseThrow(() -> new UserNotFoundException("Recycler not found"));
 
-                return org.springframework.security.core.userdetails.User
+                System.out.println(recycler);
+                return User
                         .withUsername(compoundKey)
                         .password(recycler.getPassword())
                         .roles("RECYCLER")
@@ -63,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 Collector collector = collectorRepo.findByEmail(identifier)
                         .orElseThrow(() -> new UserNotFoundException("Collector not found"));
 
-                return org.springframework.security.core.userdetails.User
+                return User
                         .withUsername(compoundKey)
                         .password(collector.getPassword())
                         .roles("COLLECTOR")

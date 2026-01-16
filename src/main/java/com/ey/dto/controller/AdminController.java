@@ -7,26 +7,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ey.dto.request.recycler.DisposeRequest;
-import com.ey.dto.request.user.RegisterUserRequest;
-import com.ey.service.UserService;
+import com.ey.dto.request.AddCatagory;
+import com.ey.service.AdminService;
 
 @RestController
 @RequestMapping
-public class UserController {
+public class AdminController {
 	
 	@Autowired
-	private UserService userService;
+	private AdminService adminService;
 	
 	
 
-	@PostMapping("/auth/user/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterUserRequest req){
-		System.out.println("Here....1");
-		return userService.registerUser(req);
+	@PostMapping("/admin/catagory")
+	public ResponseEntity<?> addCatagory(@RequestBody AddCatagory req){
+		
+		return adminService.addCatagory(req);
 	}
 	
-
+	
 
 	
 }

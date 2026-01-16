@@ -1,6 +1,6 @@
 package com.ey.dto.response;
 
-public class RegisterCollectorResponse {
+public class CollectorResponse {
 	
 	private Long id;
 	

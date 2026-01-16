@@ -15,17 +15,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class DisposeRequest {
+public class Dispose {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="catagoryId")
 	private Catagory catagory;
 	
@@ -53,6 +53,39 @@ public class DisposeRequest {
 	}
 
 	
+	
+
+	public Inspection getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(Inspection inspection) {
+		this.inspection = inspection;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Catagory getCatagory() {
+		return catagory;
+	}
+
+	public void setCatagory(Catagory catagory) {
+		this.catagory = catagory;
+	}
+
+	public Collector getCollector() {
+		return collector;
+	}
+
+	public void setCollector(Collector collector) {
+		this.collector = collector;
+	}
 
 	public Integer getQuantity() {
 		return quantity;
@@ -86,7 +119,7 @@ public class DisposeRequest {
 		this.status = status;
 	}
 
-	public DisposeRequest(Long id, Integer quantity, String location,
+	public Dispose(Long id, Integer quantity, String location,
 			LocalDate requestDate, RequestStatus status) {
 		super();
 		this.id = id;
@@ -96,7 +129,7 @@ public class DisposeRequest {
 		this.status = status;
 	}
 
-	public DisposeRequest() {
+	public Dispose() {
 		super();
 	}
 	

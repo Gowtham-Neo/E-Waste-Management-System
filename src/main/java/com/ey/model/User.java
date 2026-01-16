@@ -31,7 +31,7 @@ public class User {
 	private Role role;
 
 	@OneToMany(mappedBy = "user")
-    private List<DisposeRequest> disposalRequests;
+    private List<Dispose> disposalRequests;
 	
 	@OneToMany(mappedBy = "buyer")
     private List<Order> orders;

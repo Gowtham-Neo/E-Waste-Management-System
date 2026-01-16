@@ -1,7 +1,7 @@
 package com.ey.mapper;
 
 import com.ey.dto.request.RegisterCollectorRequest;
-import com.ey.dto.response.RegisterCollectorResponse;
+import com.ey.dto.response.CollectorResponse;
 import com.ey.model.Collector;
 
 public class CollectorMapper {
@@ -17,8 +17,8 @@ public class CollectorMapper {
 		return user;
 	}
 	
-	public static RegisterCollectorResponse toResponse(Collector req,String msg) {
-		RegisterCollectorResponse res=new RegisterCollectorResponse();
+	public static CollectorResponse toResponse(Collector req,String msg) {
+		CollectorResponse res=new CollectorResponse();
 		res.setEmail(req.getEmail());
 		res.setId(req.getId());
 		res.setMessage(msg);

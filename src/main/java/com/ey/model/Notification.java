@@ -31,7 +31,7 @@ public class Notification {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disposalRequestId")
-    private DisposeRequest disposeRequest;
+    private Dispose disposeRequest;
 
 	public Long getId() {
 		return id;
