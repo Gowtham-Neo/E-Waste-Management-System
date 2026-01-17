@@ -8,6 +8,7 @@ public enum ModelType {
 	TABLET,
 	TV,
 	BATTERY,
+	RAM,
 	OTHER
 
 }

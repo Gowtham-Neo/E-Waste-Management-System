@@ -1,8 +1,5 @@
 package com.ey.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.ey.dto.request.user.RegisterUserRequest;
 import com.ey.dto.response.RegisterUserResponse;
 import com.ey.model.User;
@@ -17,7 +14,7 @@ public class UserMapper {
 		user.setEmail(req.getEmail());
 		user.setMobileNumber(req.getMobileNumber());
 		user.setName(req.getName());
-		user.setOrganizationName(req.getOrganizationName().length()>1?req.getOrganizationName():organizationname);
+		user.setOrganizationName(req.getOrganizationName()!=null?req.getOrganizationName():organizationname);
 		user.setRole(req.getRole());
 		
 		return user;

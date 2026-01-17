@@ -9,7 +9,7 @@ public class RegisterRecyclerResponse {
 	private String organizationName;
 	
 	private String email;
-	
+	private String licenceNumber;
 	private String mobileNumber;
 
 	private RecyclerStatus status;
@@ -19,6 +19,17 @@ public class RegisterRecyclerResponse {
 	public Long getId() {
 		return id;
 	}
+	
+
+	public String getLicenceNumber() {
+		return licenceNumber;
+	}
+
+
+	public void setLicenceNumber(String licenceNumber) {
+		this.licenceNumber = licenceNumber;
+	}
+
 
 	public void setId(Long id) {
 		this.id = id;

@@ -30,6 +30,7 @@ public class RecyclerMapper {
 		res.setMobileNumber(req.getMobileNumber());
 		res.setOrganizationName(req.getOrganizationName());
 		res.setStatus(req.getStatus());
+		res.setLicenceNumber(req.getLicenceNumber());
 		
 		return res;
 	}

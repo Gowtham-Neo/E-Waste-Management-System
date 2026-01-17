@@ -41,6 +41,30 @@ public class Order {
 	}
 	
 
+	public User getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(User buyer) {
+		this.buyer = buyer;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public RefurbishProducts getProducts() {
+		return products;
+	}
+
+	public void setProducts(RefurbishProducts products) {
+		this.products = products;
+	}
+
 	public Double getTotalAmount() {
 		return totalAmount;
 	}

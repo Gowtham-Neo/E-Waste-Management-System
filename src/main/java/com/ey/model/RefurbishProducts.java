@@ -4,7 +4,6 @@ package com.ey.model;
 import com.ey.enums.ConditionGrading;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +35,15 @@ public class RefurbishProducts {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	public Inspection getInspection() {
+		return inspection;
+	}
+
+	public void setInspection(Inspection inspection) {
+		this.inspection = inspection;
 	}
 
 	public Double getPrice() {
