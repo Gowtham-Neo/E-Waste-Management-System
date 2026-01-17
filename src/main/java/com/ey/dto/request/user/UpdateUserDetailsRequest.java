@@ -1,7 +1,5 @@
 package com.ey.dto.request.user;
 
-import com.ey.enums.Role;
-
 import jakarta.persistence.Column;
 
 public class UpdateUserDetailsRequest {
@@ -15,7 +13,6 @@ public class UpdateUserDetailsRequest {
 	
 	private String mobileNumber;
 	
-	private Role role;
 
 	public String getOrganizationName() {
 		return organizationName;
@@ -49,13 +46,5 @@ public class UpdateUserDetailsRequest {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-	
 	
 }
