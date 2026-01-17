@@ -1,6 +1,6 @@
 package com.ey.dto.response;
 
-public class CollectorResponse {
+public class RegisterCollectorResponse {
 	
 	private Long id;
 	
@@ -9,6 +9,8 @@ public class CollectorResponse {
 	private String mobileNumber;
 	
 	private String vehicleNumber;
+	
+	private String message;
 
 	
 	public Long getId() {
@@ -46,5 +48,15 @@ public class CollectorResponse {
 		this.mobileNumber = mobileNumber;
 	}
 
+ 
 
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	
 }

@@ -7,6 +7,5 @@ public enum RequestStatus {
 	INSPECTED,
 	COMPLETED,
 	CANCELLED,
-	UPDATED,
-	DELETED
+
 }

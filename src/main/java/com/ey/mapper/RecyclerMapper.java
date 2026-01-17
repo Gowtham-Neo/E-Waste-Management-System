@@ -1,8 +1,8 @@
 package com.ey.mapper;
 
 import com.ey.dto.request.recycler.RegisterRecyclerRequest;
+import com.ey.dto.response.RecyclerResponse;
 import com.ey.dto.response.RegisterRecyclerResponse;
-import com.ey.dto.response.RegisterUserResponse;
 import com.ey.enums.RecyclerStatus;
 import com.ey.model.Recycler;
 
@@ -27,6 +27,18 @@ public class RecyclerMapper {
 		res.setEmail(req.getEmail());
 		res.setId(req.getId());
 		res.setMessage(msg);
+		res.setMobileNumber(req.getMobileNumber());
+		res.setOrganizationName(req.getOrganizationName());
+		res.setStatus(req.getStatus());
+		res.setLicenceNumber(req.getLicenceNumber());
+		
+		return res;
+	}
+	
+	public static RecyclerResponse toResponse(Recycler req) {
+		RecyclerResponse res=new RecyclerResponse();
+		res.setEmail(req.getEmail());
+		res.setId(req.getId());
 		res.setMobileNumber(req.getMobileNumber());
 		res.setOrganizationName(req.getOrganizationName());
 		res.setStatus(req.getStatus());

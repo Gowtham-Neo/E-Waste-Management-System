@@ -5,10 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ey.dto.request.CollectorLoginRequest;
-import com.ey.dto.request.recycler.RecyclerLoginRequest;
 import com.ey.dto.request.user.UserLoginRequest;
 import com.ey.dto.response.AuthResponse;
+import com.ey.exception.UserNotFoundException;
 import com.ey.model.Collector;
 import com.ey.model.Recycler;
 import com.ey.model.User;
@@ -41,7 +40,7 @@ public class AuthService {
     public ResponseEntity<?> loginUser(UserLoginRequest request) {
 
         User user = userRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
@@ -57,8 +56,27 @@ public class AuthService {
         AuthResponse aures=new AuthResponse(token, user.getRole().name(), "USER");
         return new ResponseEntity<>(aures,HttpStatus.OK);
     }
+    public ResponseEntity<?> loginAdmin(UserLoginRequest request) {
+    	
+    	User user = userRepo.findByEmail(request.getEmail())
+    			.orElseThrow(() -> new RuntimeException("User not found"));
+    	
+    	if (!encoder.matches(request.getPassword(), user.getPassword())) {
+    		throw new RuntimeException("Invalid password");
+    	}
+    	
+    	String token = jwtUtil.generateToken(
+    			user.getEmail(),
+    			"USER",
+    			user.getRole().name()
+    			);
+    	
+    	System.out.println("Heree1");
+    	AuthResponse aures=new AuthResponse(token, user.getRole().name(), "USER");
+    	return new ResponseEntity<>(aures,HttpStatus.OK);
+    }
 
-    public AuthResponse loginRecycler(RecyclerLoginRequest request) {
+    public AuthResponse loginRecycler(UserLoginRequest request) {
 
         Recycler recycler = recyclerRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Recycler not found"));
@@ -77,7 +95,7 @@ public class AuthService {
     }
 
     
-    public AuthResponse loginCollector(CollectorLoginRequest request) {
+    public AuthResponse loginCollector(UserLoginRequest request) {
 
         Collector collector = collectorRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Collector not found"));

@@ -2,8 +2,9 @@ package com.ey.dto.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,22 +31,32 @@ public class UserController {
 		return userService.registerUser(req);
 	}
 	
-	@PostMapping("/user/update")
+	@PutMapping("/user/update")
 	public ResponseEntity<?> updateUser(@RequestBody UpdateUserDetailsRequest req,@RequestHeader("Authorization") String token){
 		
 		return userService.updateUser(req,token);
 	}
 	
-	@PostMapping("/user/reset-password")
+	
+	@PutMapping("/user/reset-password")
 	public ResponseEntity<?> resetPassword(@RequestBody UserResetPassordRequest req,@RequestHeader("Authorization") String token){
 		
 		return userService.resetPassword(req,token);
 	}
 	
-	@PostMapping("/auth/user/forget-password")
+	
+	@PutMapping("/auth/user/forget-password")
 	public ResponseEntity<?> changePassword(@RequestBody UserForgetPassordRequest req){
 		
 		return userService.forgetPassword(req);
+	}
+	
+	
+	
+	@GetMapping("/user/me")
+	public ResponseEntity<?> getMyDetails(@RequestHeader("Authorization") String token){
+		
+		return userService.getMyDetails(token);
 	}
 	
 

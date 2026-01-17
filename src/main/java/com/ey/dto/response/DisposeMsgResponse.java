@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.ey.enums.RequestStatus;
 import com.ey.model.Catagory;
 
-public class DisposeResponse {
+public class DisposeMsgResponse {
 
 	private Long id;
 	
@@ -19,12 +19,21 @@ public class DisposeResponse {
 	
 	private RequestStatus status;
 	
+	private String message;
 
 	public Long getId() {
 		return id;
 	}
 
 	
+	public String getMessage() {
+		return message;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 
 	public void setId(Long id) {

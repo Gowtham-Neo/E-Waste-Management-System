@@ -11,7 +11,6 @@ public class CreateDisposeRequest {
 	
 	private String location;
 	
-	private LocalDate requestDate;
 
 	public Long getCatagoryId() {
 		return catagoryId;
@@ -37,13 +36,4 @@ public class CreateDisposeRequest {
 		this.location = location;
 	}
 
-	public LocalDate getRequestDate() {
-		return requestDate;
-	}
-
-	public void setRequestDate(LocalDate requestDate) {
-		this.requestDate = requestDate;
-	}
-	
-	
 }

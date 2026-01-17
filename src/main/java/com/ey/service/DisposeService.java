@@ -1,5 +1,7 @@
 package com.ey.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.AssignCollectorRequest;
 import com.ey.dto.request.recycler.DisposeRequest;
+import com.ey.dto.response.DisposeResponse;
 import com.ey.enums.RequestStatus;
 import com.ey.exception.CatagoryNotFound;
 import com.ey.exception.DisposeNotFound;
@@ -54,6 +57,87 @@ public class DisposeService {
 		
 		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose Request created Successfully"),HttpStatus.CREATED);
 	}
+	
+	
+	public ResponseEntity<?> updateDisposeProduct(DisposeRequest req,Long id,String token){
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(()-> new UserNotFoundException("Invalid user Login"));
+		
+		Dispose dis=disposeRepo.findById(id)
+				.orElseThrow(()-> new DisposeNotFound("Invalid Dispose Id"));
+		
+		if (user.getId()!=dis.getUser().getId()) {
+			return new ResponseEntity<>("Dispose Request is not requested by you and you cant access it",HttpStatus.BAD_REQUEST);
+		}
+		
+		if (dis.getStatus().equals(RequestStatus.COLLECTED)||dis.getStatus().equals(RequestStatus.COMPLETED)
+				||dis.getStatus().equals(RequestStatus.INSPECTED)) {
+			return new ResponseEntity<>("Dispose Request has already in "+ dis.getStatus()+" stage, and cant be updated",HttpStatus.BAD_REQUEST);
+			
+		}
+		Catagory cata=cataRepo.findById(req.getCatagoryId())
+				.orElseThrow(()-> new CatagoryNotFound("Invalid Catagory Id"));
+		
+		dis.setCatagory(cata);
+		dis.setLocation(req.getLocation());
+		dis.setQuantity(req.getQuantity()+dis.getQuantity());
+		disposeRepo.save(dis);
+		
+		
+		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose Request Updated Successfully"),HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<?> deleteDisposeProduct(Long id,String token){
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(()-> new UserNotFoundException("Invalid user Login"));
+		
+		Dispose dis=disposeRepo.findById(id)
+				.orElseThrow(()-> new DisposeNotFound("Invalid Dispose Id"));
+		
+		if (user.getId()!=dis.getUser().getId()) {
+			return new ResponseEntity<>("Dispose Request is not requested by you and you cant access it",HttpStatus.BAD_REQUEST);
+		}
+		
+		if (dis.getStatus().equals(RequestStatus.COLLECTED)||dis.getStatus().equals(RequestStatus.COMPLETED)
+				||dis.getStatus().equals(RequestStatus.INSPECTED)) {
+			return new ResponseEntity<>("Dispose Request has already in "+ dis.getStatus()+" stage, and cant be deleted",HttpStatus.BAD_REQUEST);
+			
+		}
+		disposeRepo.deleteById(id);
+		
+		return new ResponseEntity<>("Dispose Request Deleted Successfully",HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity<?> getAllDisposeRequest(String token){
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
+							.orElseThrow(()-> new UserNotFoundException("Invalid user Login"));
+		
+		List<DisposeResponse> disposes=disposeRepo.findByUserId(user.getId())
+													.stream()
+													.map(s->DisposeMapper.toResponse(s))
+													.toList();
+		
+		return new ResponseEntity<>(disposes,HttpStatus.CREATED);
+	}
+	public ResponseEntity<?> getDisposeById(Long id,String token){
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(()-> new UserNotFoundException("Invalid user Login"));
+		
+		Dispose dispose=disposeRepo.findById(id)
+				.orElseThrow(()-> new DisposeNotFound("Invalid Dispose Id"));
+		
+		if (user.getId()!=dispose.getUser().getId()) {
+			return new ResponseEntity<>("Dispose Request is not requested by you and you can access it",HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(DisposeMapper.toResponse(dispose),HttpStatus.CREATED);
+	}
+	
+	
 	
 	public ResponseEntity<?> assignCollector(AssignCollectorRequest req,Long id){
 		

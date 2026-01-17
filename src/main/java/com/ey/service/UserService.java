@@ -37,7 +37,18 @@ public class UserService {
 		
 		return new ResponseEntity<>(UserMapper.toResponse(user, "User Created Successfully"),HttpStatus.CREATED);
 	}
+	
+	
+	public ResponseEntity<?> getMyDetails(String token){
+		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
+		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		
+		
+		return new ResponseEntity<>(UserMapper.toResponse(user, "User Created Successfully"),HttpStatus.CREATED);
+	}
 
+	
+	
 	public ResponseEntity<?> updateUser(UpdateUserDetailsRequest req, String token) {
 		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
 		
@@ -50,6 +61,9 @@ public class UserService {
 		
 		return new ResponseEntity<>(UserMapper.toResponse(user, "user details updated Successfully"),HttpStatus.ACCEPTED);
 	}
+	
+	
+	
 	public ResponseEntity<?> resetPassword(UserResetPassordRequest req, String token) {
 		if (!req.getNewPassword().equals(req.getConfirmPassword())) {
 			return new ResponseEntity<>("password mismatch",HttpStatus.BAD_REQUEST);
@@ -62,6 +76,8 @@ public class UserService {
 		
 		return new ResponseEntity<>(UserMapper.toResponse(user, "Password reser Successfully"),HttpStatus.ACCEPTED);
 	}
+	
+	
 	
 	public ResponseEntity<?> forgetPassword(UserForgetPassordRequest req) {
 		if (!req.getNewPassword().equals(req.getConfirmPassword())) {

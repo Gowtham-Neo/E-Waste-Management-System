@@ -11,7 +11,7 @@ public class DisposeCollectorResponse {
 	
 	private String message;
 	
-	private CollectorResponse collector;
+	private RegisterCollectorResponse collector;
 
 	public Long getId() {
 		return id;
@@ -20,14 +20,14 @@ public class DisposeCollectorResponse {
 	
 	
 
-	public CollectorResponse getCollector() {
+	public RegisterCollectorResponse getCollector() {
 		return collector;
 	}
 
 
 
 
-	public void setCollector(CollectorResponse collector) {
+	public void setCollector(RegisterCollectorResponse collector) {
 		this.collector = collector;
 	}
 

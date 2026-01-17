@@ -1,6 +1,6 @@
 package com.ey.mapper;
 
-import com.ey.dto.response.DisposeResponse;
+import com.ey.dto.response.DisposeMsgResponse;
 import com.ey.dto.response.RefurbishProductsResponse;
 import com.ey.model.Inspection;
 import com.ey.model.RefurbishProducts;
