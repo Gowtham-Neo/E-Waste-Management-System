@@ -2,7 +2,7 @@ package com.ey.dto.response;
 
 import com.ey.enums.HazardLevel;
 
-public class CatagoryResponse {
+public class RegisterCatagoryResponse {
 	private Long id;
 		
 		private String name;
@@ -12,9 +12,17 @@ public class CatagoryResponse {
 		private boolean refurbishable;
 		
 		private String handlingRules;
+		
+		private String message;
 
+		
+		public String getMessage() {
+			return message;
+		}
 
-
+		public void setMessage(String message) {
+			this.message = message;
+		}
 
 		public Long getId() {
 			return id;

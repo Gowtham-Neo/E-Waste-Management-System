@@ -1,7 +1,8 @@
-package com.ey.dto.controller;
+package com.ey.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,6 +86,29 @@ public class AdminController {
 		
 		return adminService.addCatagory(req);
 	}
+	@PutMapping("/admin/catagory/{id}")
+	public ResponseEntity<?> updateCatagory(@RequestBody AddCatagory req,@PathVariable("id") Long id){
+		
+		return adminService.updateCatagory(req,id);
+	}
+	@DeleteMapping("/admin/catagory/{id}")
+	public ResponseEntity<?> deleteCatagory(@PathVariable("id") Long id){
+		
+		return adminService.deleteCatagory(id);
+	}
+	@GetMapping("/admin/catagory/{id}")
+	public ResponseEntity<?> getCatagoryById(@PathVariable("id") Long id){
+		
+		return adminService.getCatagoryById(id);
+	}
+	@GetMapping("/admin/catagory")
+	public ResponseEntity<?> getAllCatagory(){
+		
+		return adminService.getAllCatagory();
+	}
+	
+	
+	
 	
 	@PutMapping("/admin/order/{id}/approve")
 	public ResponseEntity<?> orderApproveRequest(@PathVariable("id") Long id){

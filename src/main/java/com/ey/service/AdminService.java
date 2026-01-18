@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.AddCatagory;
+import com.ey.dto.response.CatagoryResponse;
 import com.ey.dto.response.CollectorResponse;
 import com.ey.dto.response.RecyclerResponse;
 import com.ey.dto.response.UserResponse;
+import com.ey.exception.CatagoryNotFound;
 import com.ey.exception.UserNotFoundException;
 import com.ey.mapper.CatagoryMapper;
 import com.ey.mapper.CollectorMapper;
@@ -22,6 +24,7 @@ import com.ey.model.Recycler;
 import com.ey.model.User;
 import com.ey.repository.CatagoryRepository;
 import com.ey.repository.CollectorRepository;
+import com.ey.repository.DisposeRepository;
 import com.ey.repository.RecyclerRepository;
 import com.ey.repository.UserRepository;
 
@@ -34,6 +37,8 @@ public class AdminService {
 	private CollectorRepository collectorRepo;
 	@Autowired
 	private RecyclerRepository recyclerRepo;
+	@Autowired
+	private DisposeRepository disposeRepo;
 	@Autowired
 	private CatagoryRepository cataRepo;
 	
@@ -57,6 +62,8 @@ public class AdminService {
 		
 		return new ResponseEntity<>(UserMapper.toResponse(user),HttpStatus.OK);
 	}
+	
+	
 	public ResponseEntity<?> getAllRecyclers(){
 		List<RecyclerResponse> recyclers=recyclerRepo.findAll()
 											.stream()
@@ -77,6 +84,8 @@ public class AdminService {
 		
 		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler),HttpStatus.OK);
 	}
+	
+	
 	public ResponseEntity<?> getAllCollectors(){
 		List<CollectorResponse> collectors=collectorRepo.findAll()
 				.stream()
@@ -107,5 +116,50 @@ public class AdminService {
 		cataRepo.save(cata);
 		
 		return new ResponseEntity<>(CatagoryMapper.toResponse(cata,"Catagory Created Successfully"),HttpStatus.CREATED);
+	}
+	public ResponseEntity<?> updateCatagory(AddCatagory req,Long id){
+		Catagory cata=cataRepo.findById(id)
+								.orElseThrow(()->new CatagoryNotFound("Invalid Catagory id"));
+		
+		cata.setHandlingRules(req.getHandlingRules());
+		cata.setLevel(req.getLevel());
+		cata.setName(req.getName());
+		cata.setRefurbishable(req.isRefurbishable());
+		cataRepo.save(cata);
+		
+		return new ResponseEntity<>(CatagoryMapper.toResponse(cata,"Catagory Updated Successfully"),HttpStatus.CREATED);
+	}
+	public ResponseEntity<?> deleteCatagory(Long id){
+		Catagory cata=cataRepo.findById(id)
+				.orElseThrow(()->new CatagoryNotFound("Invalid Catagory id"));
+		
+		List<Long> disposeId=disposeRepo.findByCatagoryId(id)
+										.stream()
+										.map(s->s.getId())
+										.toList();
+		if(!disposeId.isEmpty()) {
+			return new ResponseEntity<>("dispose with id"+disposeId.toString()+" are created using catagoryid cant be deleted",HttpStatus.BAD_REQUEST);
+		}
+										
+		cataRepo.deleteById(id);
+		
+		return new ResponseEntity<>("Catagory deleted Successfully",HttpStatus.ACCEPTED);
+	}
+	
+	public ResponseEntity<?> getCatagoryById(Long id){
+		Catagory cata=cataRepo.findById(id).orElseThrow(()-> new CatagoryNotFound("Invalid catagory id"));
+		
+		
+		return new ResponseEntity<>(CatagoryMapper.toResponse(cata),HttpStatus.OK);
+	}
+	public ResponseEntity<?> getAllCatagory(){
+		List<CatagoryResponse> res=cataRepo.findAll()
+										.stream()
+										.map(s-> CatagoryMapper.toResponse(s))
+										.toList();
+		
+		
+		
+		return new ResponseEntity<>(res,HttpStatus.OK);
 	}
 }

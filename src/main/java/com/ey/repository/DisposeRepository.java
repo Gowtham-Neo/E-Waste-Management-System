@@ -13,6 +13,9 @@ public interface DisposeRepository extends JpaRepository<Dispose,Long>{
 	List<Dispose> findByUserId(Long id);
 	
 	List<Dispose> findByCollectorId(Long id);
+	List<Dispose> findByCatagoryId(Long id);
+	
+	
 	
 	
 }

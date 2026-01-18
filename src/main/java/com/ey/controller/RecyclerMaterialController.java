@@ -1,33 +1,31 @@
-package com.ey.dto.controller;
+package com.ey.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ey.dto.request.AddMaterialsRequest;
 import com.ey.dto.request.RegisterCollectorRequest;
-import com.ey.dto.request.recycler.RegisterRecyclerRequest;
-import com.ey.service.RefurbishProductsService;
+import com.ey.service.RecycledMaterialsService;
 
 @RestController
 @RequestMapping
-public class RefurbishProductsController {
+public class RecyclerMaterialController {
 	
 	@Autowired
-	private RefurbishProductsService prodService;
+	private RecycledMaterialsService materialsService;
 	
 	
 
-	@GetMapping("/user/products")
-	public ResponseEntity<?> getAllRefubishProducts(){
-		return prodService.getAllRefubishProducts();
+	@PostMapping("/recycler/inspect/{id}/material")
+	public ResponseEntity<?> addMaterials(@RequestBody AddMaterialsRequest req,@PathVariable("id") Long id){
+		return materialsService.addMaterials(req,id);
 	}
 	
-	
-
 	
 }

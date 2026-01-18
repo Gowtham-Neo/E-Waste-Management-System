@@ -89,6 +89,7 @@ public class DisposeService {
 		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose Request Updated Successfully"),HttpStatus.CREATED);
 	}
 	
+	
 	public ResponseEntity<?> deleteDisposeProduct(Long id,String token){
 		
 		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
@@ -123,6 +124,7 @@ public class DisposeService {
 		
 		return new ResponseEntity<>(disposes,HttpStatus.CREATED);
 	}
+	
 	public ResponseEntity<?> getDisposeById(Long id,String token){
 		
 		User user=userRepo.findByEmail(jwtUtil.extractSubject(token))
@@ -140,6 +142,7 @@ public class DisposeService {
 	
 	
 	
+	
 	public ResponseEntity<?> assignCollector(AssignCollectorRequest req,Long id){
 		
 		Collector coll=collectorRepo.findById(req.getCollectorId())
@@ -151,6 +154,7 @@ public class DisposeService {
 		if (!coll.getRecycler().getStatus().equals(RecyclerStatus.APPROVED)) {
 			return new ResponseEntity<>(coll.getRecycler().getStatus()+" recycler can assgin collectors",HttpStatus.BAD_REQUEST);
 		}
+		
 		dis.setCollector(coll);
 		dis.setStatus(RequestStatus.ASSIGNED);
 	

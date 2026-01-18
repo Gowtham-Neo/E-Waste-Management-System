@@ -1,8 +1,9 @@
-package com.ey.dto.controller;
+package com.ey.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import com.ey.dto.request.user.RegisterUserRequest;
 import com.ey.dto.request.user.UpdateUserDetailsRequest;
 import com.ey.dto.request.user.UserForgetPassordRequest;
 import com.ey.dto.request.user.UserResetPassordRequest;
+import com.ey.service.AdminService;
 import com.ey.service.UserService;
 
 @RestController
@@ -22,6 +24,8 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AdminService adminService;
 	
 	
 
@@ -60,6 +64,18 @@ public class UserController {
 	}
 	
 
+	
+	
+	@GetMapping("/user/catagory/{id}")
+	public ResponseEntity<?> getCatagoryById(@PathVariable("id") Long id){
+		
+		return adminService.getCatagoryById(id);
+	}
+	@GetMapping("/user/catagory")
+	public ResponseEntity<?> getAllCatagory(){
+		
+		return adminService.getAllCatagory();
+	}
 
 	
 }

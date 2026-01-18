@@ -1,4 +1,4 @@
-package com.ey.dto.controller;
+package com.ey.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class RecyclerController {
 		return recyclerService.registerRecycler(req);
 	}
 	
-	@PutMapping("/recycler/update")
+	@PutMapping("/recycler")
 	public ResponseEntity<?> updateUser(@RequestBody UpdateRecyclerDetailsRequest req,@RequestHeader("Authorization") String token){
 		
 		return recyclerService.updateRecycler(req,token);
@@ -59,6 +59,7 @@ public class RecyclerController {
 		
 		return recyclerService.getMyDetails(token);
 	}
+	
 	
 	
 	
