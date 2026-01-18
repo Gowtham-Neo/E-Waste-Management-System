@@ -1,5 +1,7 @@
 package com.ey.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +10,17 @@ import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.RegisterCollectorRequest;
 import com.ey.dto.request.recycler.RegisterRecyclerRequest;
+import com.ey.dto.request.recycler.UpdateRecyclerDetailsRequest;
+import com.ey.dto.request.user.UserForgetPassordRequest;
+import com.ey.dto.request.user.UserResetPassordRequest;
+import com.ey.dto.response.CollectorResponse;
 import com.ey.exception.UserNotFoundException;
 import com.ey.mapper.CollectorMapper;
 import com.ey.mapper.RecyclerMapper;
 import com.ey.model.Collector;
 import com.ey.model.Recycler;
 import com.ey.repository.CollectorRepository;
+import com.ey.repository.DisposeRepository;
 import com.ey.repository.RecyclerRepository;
 import com.ey.security.JwtUtil;
 
@@ -24,38 +31,171 @@ public class RecyclerService {
 	private RecyclerRepository recyclerRepo;
 	@Autowired
 	private CollectorRepository collectorRepo;
-	
+	@Autowired
+	private DisposeRepository disposeRepo;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private JwtUtil jwtUtil;
 
-	
-	public ResponseEntity<?> registerRecycler(RegisterRecyclerRequest req){
-		Recycler recycler=RecyclerMapper.toEntity(req);
-		
+	public ResponseEntity<?> registerRecycler(RegisterRecyclerRequest req) {
+		Recycler recycler = RecyclerMapper.toEntity(req);
+
 		recycler.setPassword(passwordEncoder.encode(req.getPassword()));
 		recyclerRepo.save(recycler);
-		
-		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler Created Successfully"),HttpStatus.CREATED);
+
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler Created Successfully"),
+				HttpStatus.CREATED);
 	}
+
+	public ResponseEntity<?> getMyDetails(String token) {
+
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid user login"));
+
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler Fetch is Successfully"),
+				HttpStatus.OK);
+	}
+
+	public ResponseEntity<?> updateRecycler(UpdateRecyclerDetailsRequest req, String token) {
+
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+		recycler.setEmail(req.getEmail());
+		recycler.setMobileNumber(req.getMobileNumber());
+		recycler.setOrganizationName(req.getOrganizationName());
+		recycler.setLicenceNumber(req.getLicenceNumber());
+		recyclerRepo.save(recycler);
+
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler details updated Successfully"),
+				HttpStatus.ACCEPTED);
+	}
+
+	public ResponseEntity<?> resetPassword(UserResetPassordRequest req, String token) {
+
+		if (!req.getNewPassword().equals(req.getConfirmPassword())) {
+			return new ResponseEntity<>("password mismatch", HttpStatus.BAD_REQUEST);
+		}
+
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+		recycler.setPassword(passwordEncoder.encode(req.getConfirmPassword()));
+		recyclerRepo.save(recycler);
+
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Password reser Successfully"),
+				HttpStatus.ACCEPTED);
+	}
+
+	public ResponseEntity<?> forgetPassword(UserForgetPassordRequest req) {
+		if (!req.getNewPassword().equals(req.getConfirmPassword())) {
+			return new ResponseEntity<>("password mismatch", HttpStatus.BAD_REQUEST);
+		}
+
+		Recycler recycler = recyclerRepo.findByEmail(req.getEmail())
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+		recycler.setPassword(passwordEncoder.encode(req.getConfirmPassword()));
+		recyclerRepo.save(recycler);
+
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Password reset Successfully"),
+				HttpStatus.ACCEPTED);
+	}
+
 	
-	public ResponseEntity<?> registerCollector(RegisterCollectorRequest req,String token){
-		
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
-		
+	
+	
+	public ResponseEntity<?> registerCollector(RegisterCollectorRequest req, String token) {
+
+		String email = jwtUtil.extractClaims(token.substring(7)).getSubject();
+
 		System.out.println(email);
-			
-		Recycler recycler=recyclerRepo.findByEmail(email)
-										.orElseThrow(()-> new UserNotFoundException("Recycler not found"));
-		
-		Collector collector=CollectorMapper.toEntity(req);
-		
+
+		Recycler recycler = recyclerRepo.findByEmail(email)
+				.orElseThrow(() -> new UserNotFoundException("Recycler not found"));
+
+		Collector collector = CollectorMapper.toEntity(req);
+
 		collector.setPassword(passwordEncoder.encode(req.getPassword()));
 		collector.setRecycler(recycler);
 		collectorRepo.save(collector);
-		
-		return new ResponseEntity<>(CollectorMapper.toResponse(collector, "Collector Created Successfully"),HttpStatus.CREATED);
+
+		return new ResponseEntity<>(CollectorMapper.toResponse(collector, "Collector Created Successfully"),
+				HttpStatus.CREATED);
 	}
+	
+	
+	public ResponseEntity<?> updateCollector(RegisterCollectorRequest req, Long id,String token) {
+		
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler login"));
+
+		Collector coll = collectorRepo.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("Invalid Collector Id"));
+		
+		if (recycler.getId() != coll.getRecycler().getId()) {
+			return new ResponseEntity<>("You can access other collector", HttpStatus.BAD_REQUEST);
+		}
+		coll.setEmail(req.getEmail());
+		coll.setMobileNumber(req.getMobileNumber());
+		coll.setPassword(passwordEncoder.encode(req.getPassword()));
+		coll.setVehicleNumber(req.getVehicleNumber());
+		collectorRepo.save(coll);
+		
+		return new ResponseEntity<>(CollectorMapper.toResponse(coll, "Collector Updated Successfully"),
+				HttpStatus.ACCEPTED);
+	}
+	
+	
+	public ResponseEntity<?> deleteCollector(Long id,String token) {
+		
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler login"));
+		
+		Collector coll = collectorRepo.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("Invalid Collector Id"));
+		
+		if (recycler.getId() != coll.getRecycler().getId()) {
+			return new ResponseEntity<>("You can access other collector", HttpStatus.BAD_REQUEST);
+		}
+		
+		List<Long> disposeId=disposeRepo.findByCollectorId(id)
+											.stream()
+											.map(s->s.getId())
+											.toList();
+		if (!disposeId.isEmpty()) {
+			return new ResponseEntity<>("collector is assigned to these dispose id"+disposeId.toString()+"cant be deleted",HttpStatus.BAD_GATEWAY);
+		}
+		collectorRepo.deleteById(id);
+		
+		return new ResponseEntity<>("Collector Deleted Successfully",HttpStatus.ACCEPTED);
+	}
+
+	
+	public ResponseEntity<?> getMyCollectors(String token) {
+
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+
+		List<CollectorResponse> collectors = collectorRepo.findByRecyclerId(recycler.getId()).stream()
+				.map(s -> CollectorMapper.toResponse(s)).toList();
+
+		return new ResponseEntity<>(collectors, HttpStatus.OK);
+	}
+
+	
+	public ResponseEntity<?> getMyCollectorById(Long id, String token) {
+
+		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
+				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+
+		Collector coll = collectorRepo.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("Invalid Collector Id"));
+		if (recycler.getId() != coll.getRecycler().getId()) {
+			return new ResponseEntity<>("You can access other collector", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(CollectorMapper.toResponse(coll), HttpStatus.OK);
+	}
+
 }

@@ -40,19 +40,17 @@ public class UserService {
 	
 	
 	public ResponseEntity<?> getMyDetails(String token){
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
-		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
 		
 		
-		return new ResponseEntity<>(UserMapper.toResponse(user, "User Created Successfully"),HttpStatus.CREATED);
+		return new ResponseEntity<>(UserMapper.toResponse(user, "User Fetched Successfully"),HttpStatus.CREATED);
 	}
 
 	
 	
 	public ResponseEntity<?> updateUser(UpdateUserDetailsRequest req, String token) {
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
 		
-		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid User."));
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid User."));
 		user.setEmail(req.getEmail());
 		user.setMobileNumber(req.getMobileNumber());
 		user.setName(req.getName());
@@ -68,9 +66,8 @@ public class UserService {
 		if (!req.getNewPassword().equals(req.getConfirmPassword())) {
 			return new ResponseEntity<>("password mismatch",HttpStatus.BAD_REQUEST);
 		}
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
 		
-		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid User."));
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid User."));
 		user.setPassword(passwordEncoder.encode(req.getConfirmPassword()));
 		userRepo.save(user);
 		

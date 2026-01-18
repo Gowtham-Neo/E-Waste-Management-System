@@ -11,4 +11,8 @@ import com.ey.model.Dispose;
 public interface DisposeRepository extends JpaRepository<Dispose,Long>{
 
 	List<Dispose> findByUserId(Long id);
+	
+	List<Dispose> findByCollectorId(Long id);
+	
+	
 }

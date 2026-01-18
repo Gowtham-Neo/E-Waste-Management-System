@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ey.dto.request.AssignCollectorRequest;
 import com.ey.dto.request.recycler.DisposeRequest;
 import com.ey.dto.response.DisposeResponse;
+import com.ey.enums.RecyclerStatus;
 import com.ey.enums.RequestStatus;
 import com.ey.exception.CatagoryNotFound;
 import com.ey.exception.DisposeNotFound;
@@ -146,6 +147,10 @@ public class DisposeService {
 		
 		Dispose dis=disposeRepo.findById(id)
 										.orElseThrow(()-> new DisposeNotFound("Invlaid dispose Id"));
+		
+		if (!coll.getRecycler().getStatus().equals(RecyclerStatus.APPROVED)) {
+			return new ResponseEntity<>(coll.getRecycler().getStatus()+" recycler can assgin collectors",HttpStatus.BAD_REQUEST);
+		}
 		dis.setCollector(coll);
 		dis.setStatus(RequestStatus.ASSIGNED);
 	
