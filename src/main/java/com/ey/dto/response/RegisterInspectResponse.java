@@ -7,7 +7,7 @@ import com.ey.enums.DisposalStatus;
 import com.ey.enums.FunctionalStatus;
 import com.ey.enums.ModelType;
 
-public class InspectResponse {
+public class RegisterInspectResponse {
 	
 	private Long id;
 
@@ -31,7 +31,7 @@ public class InspectResponse {
 	
 	
 	private LocalDate inspectedAt;
-
+	private String message;
 
 	public String getBrand() {
 		return brand;
@@ -67,6 +67,15 @@ public class InspectResponse {
 		this.inspectedAt = inspectedAt;
 	}
 
+
+	public String getMessage() {
+		return message;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 
 	public void setBrand(String brand) {

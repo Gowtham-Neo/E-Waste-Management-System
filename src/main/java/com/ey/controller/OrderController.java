@@ -2,6 +2,7 @@ package com.ey.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,20 @@ public class OrderController {
 			@RequestHeader("Authorization") String token){
 		return orderService.orderRequest(req,id,token);
 	}
+	@PutMapping("/user/order/{id}")
+	public ResponseEntity<?> updateorderRequest(@RequestBody CreateOrderRequest req,@PathVariable("id") Long id,
+			@RequestHeader("Authorization") String token){
+		return orderService.updateorderRequest(req,id,token);
+	}
+	@GetMapping("/user/orders")
+	public ResponseEntity<?> getAllOrders(@RequestHeader("Authorization") String token){
+		return orderService.getAllOrders(token);
+	}
+	@GetMapping("/user/order/{id}")
+	public ResponseEntity<?> getOrderById(@PathVariable("id") Long id,@RequestHeader("Authorization") String token){
+		return orderService.getOrderById(id,token);
+	}
+	
 	
 	@PutMapping("/recycler/order/{id}/approve")
 	public ResponseEntity<?> orderApproveRequest(@PathVariable("id") Long id){

@@ -86,7 +86,7 @@ public class DisposeService {
 		disposeRepo.save(dis);
 		
 		
-		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose Request Updated Successfully"),HttpStatus.CREATED);
+		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose Request Updated Successfully"),HttpStatus.ACCEPTED);
 	}
 	
 	
@@ -109,7 +109,7 @@ public class DisposeService {
 		}
 		disposeRepo.deleteById(id);
 		
-		return new ResponseEntity<>("Dispose Request Deleted Successfully",HttpStatus.CREATED);
+		return new ResponseEntity<>("Dispose Request Deleted Successfully",HttpStatus.ACCEPTED);
 	}
 	
 	public ResponseEntity<?> getAllDisposeRequest(String token){
@@ -122,7 +122,7 @@ public class DisposeService {
 													.map(s->DisposeMapper.toResponse(s))
 													.toList();
 		
-		return new ResponseEntity<>(disposes,HttpStatus.CREATED);
+		return new ResponseEntity<>(disposes,HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getDisposeById(Long id,String token){
@@ -138,6 +138,31 @@ public class DisposeService {
 		}
 		
 		return new ResponseEntity<>(DisposeMapper.toResponse(dispose),HttpStatus.CREATED);
+	}
+	
+	
+	
+	
+	
+	public ResponseEntity<?> getAllDisposeByAdmin(){
+		
+		
+		List<DisposeResponse> disposes=disposeRepo.findAll()
+											.stream()
+											.map(s->DisposeMapper.toResponse(s))
+											.toList();
+		
+		return new ResponseEntity<>(disposes,HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> getDisposeByIdByAdmin(Long id){
+		
+		
+		Dispose dispose=disposeRepo.findById(id)
+				.orElseThrow(()-> new DisposeNotFound("Invalid Dispose Id"));
+		
+		
+		return new ResponseEntity<>(DisposeMapper.toResponse(dispose),HttpStatus.OK);
 	}
 	
 	

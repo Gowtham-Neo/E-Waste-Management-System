@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ey.dto.request.AddCatagory;
+import com.ey.dto.request.UpdateMaterialsRequest;
+import com.ey.model.RecycledMaterials;
 import com.ey.service.AdminService;
+import com.ey.service.DisposeService;
+import com.ey.service.InspectService;
 import com.ey.service.OrderService;
+import com.ey.service.RecycledMaterialsService;
 
 @RestController
 @RequestMapping
@@ -22,6 +27,12 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private DisposeService disposeService;
+	@Autowired
+	private InspectService inspectService;
+	@Autowired
+	private RecycledMaterialsService materialsService;
 	
 	@Autowired
 	private OrderService orderService;
@@ -120,6 +131,44 @@ public class AdminController {
 	
 	
 	
+	
+	@GetMapping("/admin/disposes")
+	public ResponseEntity<?> getAllDisposes(){
+		
+		return disposeService.getAllDisposeByAdmin();
+	}
+	@GetMapping("/admin/dispose/{id}")
+	public ResponseEntity<?> getAllDisposes(@PathVariable("id") Long id){
+		
+		return disposeService.getDisposeByIdByAdmin(id);
+	}
+	
+	
+	
+	
+	
+	@GetMapping("/admin/inspects")
+	public ResponseEntity<?> getAllInspects(){
+		
+		return inspectService.getAllInspectsByAdmin();
+	}
+	@GetMapping("/admin/inspect/{id}")
+	public ResponseEntity<?> getInspectsById(@PathVariable("id") Long id){
+		
+		return inspectService.getInspectsByIdByAdmin(id);
+	}
+	
+	
+	
+	
+	@GetMapping("/admin/orders")
+	public ResponseEntity<?> getAllOrders(){
+		return orderService.getAllOrdersByAdmin();
+	}
+	@GetMapping("/admin/order/{id}")
+	public ResponseEntity<?> getOrderById(@PathVariable("id") Long id){
+		return orderService.getOrderByIdByAdmin(id);
+	}
 	@PutMapping("/admin/order/{id}/approve")
 	public ResponseEntity<?> orderApproveRequest(@PathVariable("id") Long id){
 		return orderService.orderApproveRequest(id);
@@ -130,6 +179,25 @@ public class AdminController {
 		return orderService.orderRejectRequest(id);
 	}
 	
-
+	@PutMapping("/admin/order/{id}/dispatch")
+	public ResponseEntity<?> orderDispathRequest(@PathVariable("id") Long id){
+		return orderService.orderDispatchRequest(id);
+	}
+	
+	
+	
+	
+	@PutMapping("/admin/material/{id}")
+	public ResponseEntity<?> updateMaterials(@RequestBody UpdateMaterialsRequest req,@PathVariable("id") Long id){
+		return materialsService.updateMaterial(req,id);
+	}
+	@GetMapping("/admin/materials")
+	public ResponseEntity<?> getAllMaterials(){
+		return materialsService.getAllMaterials();
+	}
+	@GetMapping("/admin/material/{id}")
+	public ResponseEntity<?> getMaterialById(@PathVariable("id") Long id){
+		return materialsService.getMaterialById(id);
+	}
 	
 }

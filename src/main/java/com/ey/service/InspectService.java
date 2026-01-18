@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.CreateInspectRequest;
 import com.ey.dto.response.InspectResponse;
+import com.ey.dto.response.RegisterInspectResponse;
 import com.ey.enums.ConditionGrading;
 import com.ey.enums.DisposalStatus;
 import com.ey.enums.FunctionalStatus;
@@ -184,7 +185,7 @@ public class InspectService {
 		
 		
 		
-		List<InspectResponse> ip=inspectRepo.findAllByRecyclerId(recycler.getId())
+		List<RegisterInspectResponse> ip=inspectRepo.findAllByRecyclerId(recycler.getId())
 												.stream()
 												.map(s-> InspectionMapper.toResponse(s, "fetch successfull"))
 												.toList();
@@ -211,5 +212,29 @@ public class InspectService {
 		return new ResponseEntity<>(InspectionMapper.toResponse(ip, "Fetch Successfull"),HttpStatus.OK);
 	}
 	
+	
+	
+	
+	public ResponseEntity<?> getAllInspectsByAdmin(){
+		
+		
+		List<InspectResponse> inspects=inspectRepo.findAll()
+													.stream()
+													.map(s->InspectionMapper.toResponse(s))
+													.toList();
+														
+		
+		return new ResponseEntity<>(inspects,HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> getInspectsByIdByAdmin(Long id){
+		
+		
+		Inspection inspect=inspectRepo.findById(id)
+				.orElseThrow(()-> new InspectionNotFoundException("Invalid Inspect Id"));
+		
+		
+		return new ResponseEntity<>(InspectionMapper.toResponse(inspect),HttpStatus.OK);
+	}
 	
 }

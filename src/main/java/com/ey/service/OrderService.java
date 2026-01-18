@@ -1,11 +1,14 @@
 package com.ey.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.CreateOrderRequest;
+import com.ey.dto.response.OrderResponse;
 import com.ey.enums.OrderStatus;
 import com.ey.exception.CatagoryNotFound;
 import com.ey.exception.OrderNotFound;
@@ -41,6 +44,10 @@ public class OrderService {
 		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
 		
 		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		if (prod.getQuantity()<req.getQuantity()) {
+
+			return new ResponseEntity<>("insufficent Quantity",HttpStatus.BAD_REQUEST);
+		}
 		Order ord=OrdersMapper.toEntity(prod, req.getQuantity());
 		ord.setBuyer(user);
 
@@ -53,11 +60,64 @@ public class OrderService {
 		
 		return new ResponseEntity<>(OrdersMapper.toResponse(ord),HttpStatus.CREATED);
 	}
-
-
-
-	public ResponseEntity<?> orderApproveRequest(Long id) {
+	
+	public ResponseEntity<?> updateorderRequest(CreateOrderRequest req,Long id,String token) {
 		// TODO Auto-generated method stub
+		Order order=orderRepo.findById(id).orElseThrow(()-> new CatagoryNotFound("Invalid Order id"));
+		RefurbishProducts prod=order.getProducts();
+
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		
+		if (order.getBuyer().getId()!=user.getId()) {
+			return new ResponseEntity<>("Trying to update other user order",HttpStatus.BAD_REQUEST);
+		}
+		if (order.getStatus().equals(OrderStatus.DISPATCHED)||order.getStatus().equals(OrderStatus.DELIVERED)) {
+			return new ResponseEntity<>("Order has already been"+ order.getStatus()+" stage and cant change to updated",HttpStatus.BAD_REQUEST);
+		}
+		if (prod.getQuantity()<req.getQuantity()+order.getQuantity()) {
+
+			return new ResponseEntity<>("insufficent Quantity to update, avaiable: "+prod.getQuantity(),HttpStatus.BAD_REQUEST);
+		}
+		order.setQuantity(req.getQuantity()+order.getQuantity());
+		
+		orderRepo.save(order);
+		
+		prod.setQuantity(prod.getQuantity()-order.getQuantity());
+		prodRepo.save(prod);
+		
+		
+		
+		return new ResponseEntity<>(OrdersMapper.toResponse(order),HttpStatus.ACCEPTED);
+	}
+	public ResponseEntity<?> getAllOrders(String token) {
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		
+		List<OrderResponse> orders=orderRepo.findByBuyerId(user.getId())
+												.stream()
+												.map(s-> OrdersMapper.toResponse(s))
+												.toList();
+		
+		return new ResponseEntity<>(orders,HttpStatus.OK);
+	}
+	public ResponseEntity<?> getOrderById(Long id,String token) {
+		
+		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid user login"));
+		
+		Order order=orderRepo.findByIdAndBuyerId(id, user.getId()).orElseThrow(()-> new OrderNotFound("Invalid Order Id"));
+		
+		
+		return new ResponseEntity<>(OrdersMapper.toResponse(order),HttpStatus.OK);
+	}
+
+	
+	
+	
+	
+	
+	public ResponseEntity<?> orderApproveRequest(Long id) {
+
 		Order ord=orderRepo.findById(id).orElseThrow(()-> new OrderNotFound("Invalid Order Id"));
 		if (ord.getStatus().equals(OrderStatus.DISPATCHED)||ord.getStatus().equals(OrderStatus.DELIVERED)) {
 			return new ResponseEntity<>("Order has already been"+ ord.getStatus()+" stage and cant change to approved",HttpStatus.BAD_REQUEST);
@@ -66,19 +126,6 @@ public class OrderService {
 		orderRepo.save(ord);
 		
 		return new ResponseEntity<>(OrdersMapper.toStatusResponse(ord, "Order Approved Successfully"),HttpStatus.ACCEPTED);
-		
-	}
-	public ResponseEntity<?> orderDispatchRequest(Long id) {
-		Order ord=orderRepo.findById(id).orElseThrow(()-> new OrderNotFound("Invalid Order Id"));
-		
-		if (ord.getStatus().equals(OrderStatus.APPROVED)) {
-			ord.setStatus(OrderStatus.DISPATCHED);
-			orderRepo.save(ord);
-			return new ResponseEntity<>(OrdersMapper.toStatusResponse(ord, "Order Dispatched Successfully"),HttpStatus.ACCEPTED);
-		}
-		
-		
-		return new ResponseEntity<>("Order is in "+ ord.getStatus()+" stage and cant be dispatched",HttpStatus.BAD_REQUEST);
 		
 	}
 
@@ -94,6 +141,20 @@ public class OrderService {
 		orderRepo.save(ord);
 		
 		return new ResponseEntity<>(OrdersMapper.toStatusResponse(ord, "Order Rejected Successfully"),HttpStatus.ACCEPTED);
+		
+	}
+	
+	public ResponseEntity<?> orderDispatchRequest(Long id) {
+		Order ord=orderRepo.findById(id).orElseThrow(()-> new OrderNotFound("Invalid Order Id"));
+		
+		if (ord.getStatus().equals(OrderStatus.APPROVED)) {
+			ord.setStatus(OrderStatus.DISPATCHED);
+			orderRepo.save(ord);
+			return new ResponseEntity<>(OrdersMapper.toStatusResponse(ord, "Order Dispatched Successfully"),HttpStatus.ACCEPTED);
+		}
+		
+		
+		return new ResponseEntity<>("Order is in "+ ord.getStatus()+" stage and cant be dispatched",HttpStatus.BAD_REQUEST);
 		
 	}
 
@@ -112,4 +173,30 @@ public class OrderService {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	public ResponseEntity<?> getAllOrdersByAdmin() {
+		List<OrderResponse> res=orderRepo.findAll()
+										.stream()
+										.map(s-> OrdersMapper.toResponse(s))
+										.toList();
+		
+		return new ResponseEntity<>(res,HttpStatus.OK);
+		
+	}
+	public ResponseEntity<?> getOrderByIdByAdmin(Long id) {
+		Order order=orderRepo.findById(id).orElseThrow(()-> new OrderNotFound("Invalid Order Id"));
+		
+		return new ResponseEntity<>(OrdersMapper.toResponse(order),HttpStatus.OK);
+		
+	}
+	
+	
 }
+ 

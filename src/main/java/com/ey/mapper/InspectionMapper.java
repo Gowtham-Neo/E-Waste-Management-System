@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.ey.dto.request.CreateInspectRequest;
 import com.ey.dto.response.InspectResponse;
+import com.ey.dto.response.RegisterInspectResponse;
 import com.ey.model.Inspection;
 
 public class InspectionMapper {
@@ -27,8 +28,8 @@ public class InspectionMapper {
 		return ip;
 	}
 	
-	public static InspectResponse toResponse(Inspection req,String msg) {
-		InspectResponse ip=new InspectResponse();
+	public static RegisterInspectResponse toResponse(Inspection req,String msg) {
+		RegisterInspectResponse ip=new RegisterInspectResponse();
 		
 		ip.setBrand(req.getBrand());
 		ip.setConditionGrade(req.getConditionGrade());
@@ -43,6 +44,27 @@ public class InspectionMapper {
 		ip.setDecision(req.getDecision());
 		ip.setId(req.getId());
 		ip.setMessage(msg);
+		
+		
+		return ip;
+	}
+	
+	
+	public static InspectResponse toResponse(Inspection req) {
+		InspectResponse ip=new InspectResponse();
+		
+		ip.setBrand(req.getBrand());
+		ip.setConditionGrade(req.getConditionGrade());
+		ip.setCurrentMarketValue(req.getCurrentMarketValue());
+		ip.setEstimatedRepairCost(req.getEstimatedRepairCost());
+		ip.setInspectedAt(req.getInspectedAt());
+		ip.setManufatureYear(req.getManufatureYear());
+		ip.setModelName(req.getModelName());
+		ip.setStatus(req.getStatus());
+		ip.setId(req.getId());
+		ip.setType(req.getType());
+		ip.setDecision(req.getDecision());
+		ip.setId(req.getId());
 		
 		
 		return ip;
