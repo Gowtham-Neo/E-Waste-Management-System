@@ -44,6 +44,16 @@ public class AdminController {
 	
 	
 	
+	@PutMapping("/admin/recycler/{id}/approve")
+	public ResponseEntity<?> approveRecycler(@PathVariable("id") Long id){
+		
+		return adminService.approveRecycler(id);
+	}
+	@PutMapping("/admin/recycler/{id}/reject")
+	public ResponseEntity<?> rejectRecycler(@PathVariable("id") Long id){
+		
+		return adminService.rejectRecycler(id);
+	}
 	@GetMapping("/admin/recyclers")
 	public ResponseEntity<?> getAllRecyclers(){
 		

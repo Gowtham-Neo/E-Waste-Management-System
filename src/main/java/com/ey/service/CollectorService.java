@@ -1,10 +1,13 @@
 package com.ey.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ey.dto.response.DisposeResponse;
 import com.ey.enums.RequestStatus;
 import com.ey.exception.DisposeNotFound;
 import com.ey.exception.UserNotFoundException;
@@ -31,14 +34,18 @@ public class CollectorService {
 	public ResponseEntity<?> collectDiposeRequest(Long id,String token) {
 		
 		Dispose dis=disposeRepo.findById(id).orElseThrow(()->new DisposeNotFound("Invalid Dispose Id"));
-		dis.setStatus(RequestStatus.COLLECTED);
 		
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
-		Collector coll=collectorRepo.findByEmail(email).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		Collector coll=collectorRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		
+		if (dis.getCollector()==null) {
+			return new ResponseEntity<>("Not Assigned collector tries to collect the disposes",HttpStatus.BAD_REQUEST);
+		}
 		
 		if (coll.getId()!=dis.getCollector().getId()) {
 			return new ResponseEntity<>("Not Assigned collector tries to collect the disposes",HttpStatus.BAD_REQUEST);
 		}
+		dis.setStatus(RequestStatus.COLLECTED);
+		disposeRepo.save(dis);
 		
 		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dipose Products collected Successfully"),HttpStatus.ACCEPTED);
 	}
@@ -48,16 +55,45 @@ public class CollectorService {
 		
 		Dispose dis=disposeRepo.findById(id).orElseThrow(()->new DisposeNotFound("Invalid Dispose Id"));
 		
-		String email=jwtUtil.extractClaims(token.substring(7)).getSubject();
-		Collector coll=collectorRepo.findByEmail(email).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		Collector coll=collectorRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		
+		if (dis.getCollector()==null) {
+			return new ResponseEntity<>("Not Assigned collector tries to collect the disposes",HttpStatus.BAD_REQUEST);
+		}
 		
 		if (coll.getId()!=dis.getCollector().getId()) {
 			return new ResponseEntity<>("Not Assigned collector tries to collect the disposes",HttpStatus.BAD_REQUEST);
 		}
 		dis.setStatus(RequestStatus.CANCELLED);
-		
+		disposeRepo.save(dis);
 		
 		return new ResponseEntity<>(DisposeMapper.toResponse(dis, "Dispose products collection cancelled as this is fake request"),HttpStatus.ACCEPTED);
+	}
+	
+	
+	public ResponseEntity<?> getAllDiposeRequest(String token) {
+		
+		
+		Collector coll=collectorRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		
+		List<DisposeResponse> disposes=disposeRepo.findByCollectorId(coll.getId())
+												.stream()
+												.map(s-> DisposeMapper.toResponse(s))
+												.toList();
+		
+		return new ResponseEntity<>(disposes,HttpStatus.OK);
+	}
+	public ResponseEntity<?> getDiposeRequestById(Long id,String token) {
+		
+		Dispose dis=disposeRepo.findById(id).orElseThrow(()-> new DisposeNotFound("Invalid dispose Id"));
+		Collector coll=collectorRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()->new UserNotFoundException("Invalid collector id"));
+		
+		if (dis.getCollector().getId()!=coll.getId()) {
+			return new ResponseEntity<>("this dispose is not assigned to you",HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		return new ResponseEntity<>(DisposeMapper.toResponse(dis),HttpStatus.OK);
 	}
 	
 	

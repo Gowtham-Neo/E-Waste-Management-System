@@ -12,6 +12,7 @@ import com.ey.dto.response.CatagoryResponse;
 import com.ey.dto.response.CollectorResponse;
 import com.ey.dto.response.RecyclerResponse;
 import com.ey.dto.response.UserResponse;
+import com.ey.enums.RecyclerStatus;
 import com.ey.exception.CatagoryNotFound;
 import com.ey.exception.UserNotFoundException;
 import com.ey.mapper.CatagoryMapper;
@@ -64,6 +65,21 @@ public class AdminService {
 	}
 	
 	
+	
+	
+	
+	public ResponseEntity<?> approveRecycler(Long id){
+		Recycler recycler=recyclerRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid Recycler id"));
+		recycler.setStatus(RecyclerStatus.APPROVED);
+		recyclerRepo.save(recycler);
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "REcycler Status updated successfullly"),HttpStatus.ACCEPTED);
+	}
+	public ResponseEntity<?> rejectRecycler(Long id){
+		Recycler recycler=recyclerRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid Recycler id"));
+		recycler.setStatus(RecyclerStatus.REJECTED);
+		recyclerRepo.save(recycler);
+		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler Status updated successfullly"),HttpStatus.ACCEPTED);
+	}
 	public ResponseEntity<?> getAllRecyclers(){
 		List<RecyclerResponse> recyclers=recyclerRepo.findAll()
 											.stream()

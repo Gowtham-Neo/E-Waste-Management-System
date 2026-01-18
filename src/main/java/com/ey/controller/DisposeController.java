@@ -53,7 +53,7 @@ public class DisposeController {
 	
 	
 	
-	@PostMapping("/recycler/dispose/{id}/assign")
+	@PutMapping("/recycler/dispose/{id}/assign")
 	public ResponseEntity<?> assignCollector(@RequestBody AssignCollectorRequest req,@PathVariable("id") Long id){
 		return disposeService.assignCollector(req,id);
 	}

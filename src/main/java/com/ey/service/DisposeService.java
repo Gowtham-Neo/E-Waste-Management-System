@@ -152,7 +152,13 @@ public class DisposeService {
 										.orElseThrow(()-> new DisposeNotFound("Invlaid dispose Id"));
 		
 		if (!coll.getRecycler().getStatus().equals(RecyclerStatus.APPROVED)) {
-			return new ResponseEntity<>(coll.getRecycler().getStatus()+" recycler can assgin collectors",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(coll.getRecycler().getStatus()+" recycler cant assgin collectors,need admin approval",HttpStatus.BAD_REQUEST);
+		}
+		
+		if (dis.getStatus().equals(RequestStatus.COLLECTED)||dis.getStatus().equals(RequestStatus.COMPLETED)
+				||dis.getStatus().equals(RequestStatus.INSPECTED)) {
+			return new ResponseEntity<>("Dispose Request has already in "+ dis.getStatus()+" stage, and cant be assigned",HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		dis.setCollector(coll);

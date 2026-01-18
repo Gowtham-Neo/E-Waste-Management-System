@@ -41,7 +41,7 @@ public class Dispose {
     @JoinColumn(name = "collectorId")
     private Collector collector;
 
-    @OneToOne(mappedBy = "disposeRequest",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "disposeRequest",fetch = FetchType.LAZY)
     private Inspection inspection;
 
 	public Long getId() {

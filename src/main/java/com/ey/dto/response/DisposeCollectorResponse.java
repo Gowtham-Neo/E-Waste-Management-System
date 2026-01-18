@@ -7,11 +7,16 @@ public class DisposeCollectorResponse {
 
 	private Long id;
 
+	
+	
+	private String email;
+	
+	private String mobileNumber;
+	
+	private String vehicleNumber;
 	private RequestStatus status;
 	
 	private String message;
-	
-	private RegisterCollectorResponse collector;
 
 	public Long getId() {
 		return id;
@@ -20,16 +25,58 @@ public class DisposeCollectorResponse {
 	
 	
 
-	public RegisterCollectorResponse getCollector() {
-		return collector;
+
+
+	public String getEmail() {
+		return email;
 	}
 
 
 
 
-	public void setCollector(RegisterCollectorResponse collector) {
-		this.collector = collector;
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
+
+
+
+
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+
+
+
+
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+
+
+
+
+
+	public String getVehicleNumber() {
+		return vehicleNumber;
+	}
+
+
+
+
+
+
+	public void setVehicleNumber(String vehicleNumber) {
+		this.vehicleNumber = vehicleNumber;
+	}
+
+
 
 
 

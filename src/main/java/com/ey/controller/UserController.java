@@ -56,12 +56,18 @@ public class UserController {
 	}
 	
 	
-	
 	@GetMapping("/user/me")
 	public ResponseEntity<?> getMyDetails(@RequestHeader("Authorization") String token){
 		
 		return userService.getMyDetails(token);
 	}
+	
+	
+
+	
+	
+	
+	
 	
 
 	

@@ -3,10 +3,10 @@ package com.ey.mapper;
 import java.time.LocalDate;
 
 import com.ey.dto.request.recycler.DisposeRequest;
+import com.ey.dto.response.CollectorResponse;
 import com.ey.dto.response.DisposeCollectorResponse;
 import com.ey.dto.response.DisposeMsgResponse;
 import com.ey.dto.response.DisposeResponse;
-import com.ey.dto.response.RegisterCollectorResponse;
 import com.ey.enums.RequestStatus;
 import com.ey.model.Catagory;
 import com.ey.model.Dispose;
@@ -56,11 +56,11 @@ public class DisposeMapper {
 	public static DisposeCollectorResponse toResponseWithCollector(Dispose req,String msg) {
 		DisposeCollectorResponse res=new DisposeCollectorResponse();
 		res.setId(req.getId());
-		RegisterCollectorResponse coll=CollectorMapper.toResponse(req.getCollector(), msg);
-		res.setCollector(coll);
+		res.setEmail(req.getCollector().getEmail());
 		res.setMessage(msg);
+		res.setMobileNumber(req.getCollector().getMobileNumber());
 		res.setStatus(req.getStatus());
-		
+		res.setVehicleNumber(req.getCollector().getVehicleNumber());
 		
 		
 		return res;
