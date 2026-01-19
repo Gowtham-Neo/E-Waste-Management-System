@@ -14,6 +14,8 @@ import com.ey.dto.request.AddMaterialsRequest;
 import com.ey.dto.request.UpdateMaterialsRequest;
 import com.ey.service.RecycledMaterialsService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class RecyclerMaterialController {
@@ -24,11 +26,11 @@ public class RecyclerMaterialController {
 	
 
 	@PostMapping("/recycler/inspect/{id}/material")
-	public ResponseEntity<?> addMaterials(@RequestBody AddMaterialsRequest req,@PathVariable("id") Long id){
+	public ResponseEntity<?> addMaterials(@Valid @RequestBody AddMaterialsRequest req,@PathVariable("id") Long id){
 		return materialsService.addMaterials(req,id);
 	}
 	@PutMapping("/recycler/material/{id}")
-	public ResponseEntity<?> updateMaterials(@RequestBody UpdateMaterialsRequest req,@PathVariable("id") Long id){
+	public ResponseEntity<?> updateMaterials(@Valid @RequestBody UpdateMaterialsRequest req,@PathVariable("id") Long id){
 		return materialsService.updateMaterial(req,id);
 	}
 	

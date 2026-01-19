@@ -1,16 +1,26 @@
 package com.ey.dto.request.user;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class UpdateUserDetailsRequest {
 
+	@NotBlank(message= "organizationName is required")
 	private String organizationName;
 	
+	@NotBlank(message= "name is required")
 	private String name;
 	
-	@Column(nullable=false, unique=true)
+	@Column(unique=true)
+	@NotBlank(message= "email is required")
+	@Email(message="Invalid email id")
 	private String email;
 	
+	@NotBlank(message="mobileNumber is required")
+	@Pattern(regexp = "^[6-9]\\d{9}$",message = "Invalid mobile number")
+	@Column(unique=true)
 	private String mobileNumber;
 	
 

@@ -1,16 +1,26 @@
 package com.ey.dto.request.recycler;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class UpdateRecyclerDetailsRequest {
 
+	@NotBlank(message = "organizationName is required")
 	private String organizationName;
+	
 	@Column(unique = true)
+	@NotBlank(message = "licenceNumber is required")
 	private String licenceNumber;
+	
 	@Column(unique = true)
+	@Email(message="invalid email id")
+	@NotBlank(message = "email is required")
 	private String email;
 	
-	
+	@NotBlank(message="mobileNumber is required")
+	@Pattern(regexp = "^[6-9]\\d{9}$",message = "Invalid mobile number")
 	private String mobileNumber;
 
 	public String getMobileNumber() {

@@ -3,6 +3,8 @@ package com.ey.model;
 import com.ey.enums.HazardLevel;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +17,7 @@ public class Catagory {
 	private Long id;
 	
 	private String name;
-	
+	@Enumerated(EnumType.STRING)
 	private HazardLevel level;
 	
 	private boolean refurbishable;

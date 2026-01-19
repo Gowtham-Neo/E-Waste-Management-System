@@ -28,50 +28,27 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String compoundKey) {
+    public UserDetails loadUserByUsername(String email) {
 
-       
-        String[] parts = compoundKey.split(":");
-        String type = parts[0];
-        String identifier = parts[1];
-
-        switch (type) {
-
-            case "USER" -> {
-                var user = userRepo.findByEmail(identifier)
-                						.orElseThrow(()->new UserNotFoundException("User not found"));
-
-                return User
-                        .withUsername(compoundKey)
+    	return userRepo.findByEmail(email)
+                .map(user -> User.withUsername(email)
                         .password(user.getPassword())
                         .roles(user.getRole().name())
-                        .build();
-            }
-
-            case "RECYCLER" -> {
-                Recycler recycler = recyclerRepo.findByEmail(identifier)
-                        .orElseThrow(() -> new UserNotFoundException("Recycler not found"));
-
-                System.out.println(recycler);
-                return User
-                        .withUsername(compoundKey)
-                        .password(recycler.getPassword())
-                        .roles("RECYCLER")
-                        .build();
-            }
-
-            case "COLLECTOR" -> {
-                Collector collector = collectorRepo.findByEmail(identifier)
-                        .orElseThrow(() -> new UserNotFoundException("Collector not found"));
-
-                return User
-                        .withUsername(compoundKey)
-                        .password(collector.getPassword())
-                        .roles("COLLECTOR")
-                        .build();
-            }
-        }
-
-        throw new UserNotFoundException("Invalid principal type");
+                        .build())
+                
+                .or(() -> recyclerRepo.findByEmail(email)
+                        .map(recycler -> User.withUsername(email)
+                                .password(recycler.getPassword())
+                                .roles("RECYCLER")
+                                .build()))
+                
+                .or(() -> collectorRepo.findByEmail(email)
+                        .map(collector -> User.withUsername(email)
+                                .password(collector.getPassword())
+                                .roles("COLLECTOR")
+                                .build()))
+                
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found with email: " + email));
     }
 }

@@ -18,6 +18,8 @@ import com.ey.dto.request.user.UserResetPassordRequest;
 import com.ey.service.AdminService;
 import com.ey.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class UserController {
@@ -30,34 +32,34 @@ public class UserController {
 	
 
 	@PostMapping("/auth/user/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterUserRequest req){
+	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest req){
 		System.out.println("Here....1");
 		return userService.registerUser(req);
 	}
 	
-	@PutMapping("/user/update")
-	public ResponseEntity<?> updateUser(@RequestBody UpdateUserDetailsRequest req,@RequestHeader("Authorization") String token){
+	@PutMapping("/user")
+	public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserDetailsRequest req,@RequestHeader("Authorization") String token){
 		
 		return userService.updateUser(req,token);
 	}
 	
 	
 	@PutMapping("/user/reset-password")
-	public ResponseEntity<?> resetPassword(@RequestBody UserResetPassordRequest req,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody UserResetPassordRequest req,@RequestHeader("Authorization") String token){
 		
 		return userService.resetPassword(req,token);
 	}
 	
 	
 	@PutMapping("/auth/user/forget-password")
-	public ResponseEntity<?> changePassword(@RequestBody UserForgetPassordRequest req){
+	public ResponseEntity<?> changePassword(@Valid @RequestBody UserForgetPassordRequest req){
 		
 		return userService.forgetPassword(req);
 	}
 	
 	
 	@GetMapping("/user/me")
-	public ResponseEntity<?> getMyDetails(@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> getMyDetails(@Valid @RequestHeader("Authorization") String token){
 		
 		return userService.getMyDetails(token);
 	}

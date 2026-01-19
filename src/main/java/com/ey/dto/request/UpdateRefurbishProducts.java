@@ -3,18 +3,14 @@ package com.ey.dto.request;
 
 import com.ey.enums.ConditionGrading;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class UpdateRefurbishProducts {
 
 	
-	
+	@NotNull(message = "quantity is required")
+	@Positive(message =" quantity must be in positive")
 	private Integer quantity;
 
 	

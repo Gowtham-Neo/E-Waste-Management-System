@@ -19,7 +19,7 @@ public class CollectorController {
 	private CollectorService collService;
 	
 	@PutMapping("/collector/dispose/{id}/collect")
-	public ResponseEntity<?> collectDiposeRequest(@PathVariable("disposeId") Long id,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> collectDiposeRequest(@PathVariable("id") Long id,@RequestHeader("Authorization") String token){
 		return collService.collectDiposeRequest(id,token);
 	}
 	

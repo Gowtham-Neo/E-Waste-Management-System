@@ -19,6 +19,8 @@ import com.ey.dto.request.user.UserForgetPassordRequest;
 import com.ey.dto.request.user.UserResetPassordRequest;
 import com.ey.service.RecyclerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class RecyclerController {
@@ -29,26 +31,26 @@ public class RecyclerController {
 	
 
 	@PostMapping("/auth/recycler/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterRecyclerRequest req){
+	public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRecyclerRequest req){
 		return recyclerService.registerRecycler(req);
 	}
 	
 	@PutMapping("/recycler")
-	public ResponseEntity<?> updateUser(@RequestBody UpdateRecyclerDetailsRequest req,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateRecyclerDetailsRequest req,@RequestHeader("Authorization") String token){
 		
 		return recyclerService.updateRecycler(req,token);
 	}
 	
 	
 	@PutMapping("/recycler/reset-password")
-	public ResponseEntity<?> resetPassword(@RequestBody UserResetPassordRequest req,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody UserResetPassordRequest req,@RequestHeader("Authorization") String token){
 		
 		return recyclerService.resetPassword(req,token);
 	}
 	
 	
 	@PutMapping("/auth/recycler/forget-password")
-	public ResponseEntity<?> changePassword(@RequestBody UserForgetPassordRequest req){
+	public ResponseEntity<?> changePassword(@Valid @RequestBody UserForgetPassordRequest req){
 		
 		return recyclerService.forgetPassword(req);
 	}
@@ -64,12 +66,12 @@ public class RecyclerController {
 	
 	
 	@PostMapping("/recycler/collector")
-	public ResponseEntity<?> registerCollecotr(@RequestBody RegisterCollectorRequest req,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> registerCollecotr(@Valid @RequestBody RegisterCollectorRequest req,@RequestHeader("Authorization") String token){
 		return recyclerService.registerCollector(req,token);
 	}
 	
 	@PutMapping("/recycler/collector/{id}")
-	public ResponseEntity<?> updateCollector(@RequestBody RegisterCollectorRequest req,@PathVariable("id") Long id,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> updateCollector(@Valid @RequestBody RegisterCollectorRequest req,@PathVariable("id") Long id,@RequestHeader("Authorization") String token){
 		return recyclerService.updateCollector(req,id,token);
 	}
 	

@@ -2,6 +2,8 @@ package com.ey.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,24 +45,28 @@ public class AdminService {
 	@Autowired
 	private CatagoryRepository cataRepo;
 	
-	
+	Logger log = LoggerFactory.getLogger(AdminService.class);
 	public ResponseEntity<?> getAllUsers(){
 		List<UserResponse> users=userRepo.findAll()
 										.stream()
 										.map(s-> UserMapper.toResponse(s))
 										.toList();
-		
+		log.info("all users fetch is successfull");
 		return new ResponseEntity<>(users,HttpStatus.OK);
 	}
 	public ResponseEntity<?> getUserById(Long id){
 		User user=userRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid user id"));
 		
+		
+		log.info("user fetch by id is successfull");
 		return new ResponseEntity<>(UserMapper.toResponse(user),HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getUserByEmail(String email){
 		User user=userRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid user email"));
 		
+		
+		log.info("users fetch by email is successfull");
 		return new ResponseEntity<>(UserMapper.toResponse(user),HttpStatus.OK);
 	}
 	
@@ -72,12 +78,16 @@ public class AdminService {
 		Recycler recycler=recyclerRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid Recycler id"));
 		recycler.setStatus(RecyclerStatus.APPROVED);
 		recyclerRepo.save(recycler);
+		
+		log.info("recycler approve is successfull");
 		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "REcycler Status updated successfullly"),HttpStatus.ACCEPTED);
 	}
 	public ResponseEntity<?> rejectRecycler(Long id){
 		Recycler recycler=recyclerRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid Recycler id"));
 		recycler.setStatus(RecyclerStatus.REJECTED);
 		recyclerRepo.save(recycler);
+		
+		log.info("recycler reject is successfull");
 		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler, "Recycler Status updated successfullly"),HttpStatus.ACCEPTED);
 	}
 	public ResponseEntity<?> getAllRecyclers(){
@@ -86,18 +96,21 @@ public class AdminService {
 											.map(s-> RecyclerMapper.toResponse(s))
 											.toList();
 		
+		log.info("all recycler fetch is successfull");
 		return new ResponseEntity<>(recyclers,HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getRecyclerById(Long id){
 		Recycler recycler=recyclerRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid recycler id"));
 		
+		log.info("recycler fetch by id is successfull");
 		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler),HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getRecyclerByEmail(String email){
 		Recycler recycler=recyclerRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid recycler email"));
 		
+		log.info("recycler fetch by email is successfull");
 		return new ResponseEntity<>(RecyclerMapper.toResponse(recycler),HttpStatus.OK);
 	}
 	
@@ -108,18 +121,21 @@ public class AdminService {
 				.map(s-> CollectorMapper.toResponse(s))
 				.toList();
 		
+		log.info("All collector fetch is successfull");
 		return new ResponseEntity<>(collectors,HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getCollectorById(Long id){
 		Collector collector=collectorRepo.findById(id).orElseThrow(()-> new UserNotFoundException("Invalid Collector id"));
 		
+		log.info("collector fetch by id is successfull");
 		return new ResponseEntity<>(CollectorMapper.toResponse(collector),HttpStatus.OK);
 	}
 	
 	public ResponseEntity<?> getCollectorByEmail(String email){
 		Collector collector=collectorRepo.findByEmail(email).orElseThrow(()-> new UserNotFoundException("Invalid Collector email"));
 		
+		log.info("collector fetch by email is successfull");
 		return new ResponseEntity<>(CollectorMapper.toResponse(collector),HttpStatus.OK);
 	}
 	
@@ -131,6 +147,7 @@ public class AdminService {
 		
 		cataRepo.save(cata);
 		
+		log.info("catagory added successfully");
 		return new ResponseEntity<>(CatagoryMapper.toResponse(cata,"Catagory Created Successfully"),HttpStatus.CREATED);
 	}
 	public ResponseEntity<?> updateCatagory(AddCatagory req,Long id){
@@ -143,6 +160,7 @@ public class AdminService {
 		cata.setRefurbishable(req.isRefurbishable());
 		cataRepo.save(cata);
 		
+		log.info("catagory updated successfully");
 		return new ResponseEntity<>(CatagoryMapper.toResponse(cata,"Catagory Updated Successfully"),HttpStatus.CREATED);
 	}
 	public ResponseEntity<?> deleteCatagory(Long id){
@@ -159,6 +177,7 @@ public class AdminService {
 										
 		cataRepo.deleteById(id);
 		
+		log.info("catagory deleted successfully");
 		return new ResponseEntity<>("Catagory deleted Successfully",HttpStatus.ACCEPTED);
 	}
 	
@@ -166,6 +185,7 @@ public class AdminService {
 		Catagory cata=cataRepo.findById(id).orElseThrow(()-> new CatagoryNotFound("Invalid catagory id"));
 		
 		
+		log.info("catagory fetch by id is successfull");
 		return new ResponseEntity<>(CatagoryMapper.toResponse(cata),HttpStatus.OK);
 	}
 	public ResponseEntity<?> getAllCatagory(){
@@ -175,7 +195,7 @@ public class AdminService {
 										.toList();
 		
 		
-		
+		log.info("all catagory fetch is successfull");
 		return new ResponseEntity<>(res,HttpStatus.OK);
 	}
 }

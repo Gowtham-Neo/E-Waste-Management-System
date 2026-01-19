@@ -6,6 +6,8 @@ import com.ey.enums.RequestStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,7 +36,7 @@ public class Dispose {
 	private String location;
 	
 	private LocalDate requestDate;
-	
+	@Enumerated(EnumType.STRING)
 	private RequestStatus status;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -7,6 +7,8 @@ import com.ey.enums.RecyclerStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,11 +24,14 @@ public class Recycler {
 	private String organizationName;
 	@Column(unique = true)
 	private String licenceNumber;
-	
+	@Column(unique=true,nullable = false)
 	private String email;
 	
 	private String password;
+	
+	@Enumerated(EnumType.STRING)
 	private RecyclerStatus status;
+	@Column(unique=true,nullable = false)
 	private String mobileNumber;
 	
 	

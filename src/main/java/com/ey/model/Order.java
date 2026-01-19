@@ -3,6 +3,8 @@ package com.ey.model;
 import com.ey.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ public class Order {
 	private Integer quantity;
 	private Double totalAmount;
 	
+	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

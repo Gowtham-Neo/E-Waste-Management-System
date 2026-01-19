@@ -1,5 +1,8 @@
 package com.ey.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -7,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.ey.dto.request.user.UserLoginRequest;
 import com.ey.dto.response.AuthResponse;
+import com.ey.enums.Role;
+import com.ey.exception.InvalidPasswordException;
 import com.ey.exception.UserNotFoundException;
 import com.ey.model.Collector;
 import com.ey.model.Recycler;
@@ -19,23 +24,18 @@ import com.ey.security.JwtUtil;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepo;
-    private final RecyclerRepository recyclerRepo;
-    private final CollectorRepository collectorRepo;
-    private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder encoder;
+	@Autowired
+    private UserRepository userRepo;
+	@Autowired
+    private RecyclerRepository recyclerRepo;
+	@Autowired
+    private CollectorRepository collectorRepo;
+	@Autowired
+    private JwtUtil jwtUtil;
+	@Autowired
+    private BCryptPasswordEncoder encoder;
 
-    public AuthService(UserRepository userRepo,
-                       RecyclerRepository recyclerRepo,
-                       CollectorRepository collectorRepo,
-                       JwtUtil jwtUtil,
-                       BCryptPasswordEncoder encoder) {
-        this.userRepo = userRepo;
-        this.recyclerRepo = recyclerRepo;
-        this.collectorRepo = collectorRepo;
-        this.jwtUtil = jwtUtil;
-        this.encoder = encoder;
-    }
+	Logger log = LoggerFactory.getLogger(AuthService.class);
 
     public ResponseEntity<?> loginUser(UserLoginRequest request) {
 
@@ -43,73 +43,78 @@ public class AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            log.error("invalid password");
+            throw new InvalidPasswordException("Invalid password");
         }
 
         String token = jwtUtil.generateToken(
                 user.getEmail(),
-                "USER",
-                user.getRole().name()
-        );
+                user.getRole().name() 
+        		);
 
         System.out.println("Heree1");
-        AuthResponse aures=new AuthResponse(token, user.getRole().name(), "USER");
+        AuthResponse aures=new AuthResponse(token, user.getRole().name());
+        
+        log.info("user login successfull");
         return new ResponseEntity<>(aures,HttpStatus.OK);
     }
     public ResponseEntity<?> loginAdmin(UserLoginRequest request) {
     	
     	User user = userRepo.findByEmail(request.getEmail())
-    			.orElseThrow(() -> new RuntimeException("User not found"));
+    			.orElseThrow(() -> new UserNotFoundException("User not found"));
     	
     	if (!encoder.matches(request.getPassword(), user.getPassword())) {
-    		throw new RuntimeException("Invalid password");
+            log.error("invalid password");
+    		throw new InvalidPasswordException("Invalid password");
     	}
     	
     	String token = jwtUtil.generateToken(
     			user.getEmail(),
-    			"USER",
-    			user.getRole().name()
-    			);
+    			user.getRole().name());
     	
     	System.out.println("Heree1");
-    	AuthResponse aures=new AuthResponse(token, user.getRole().name(), "USER");
+    	AuthResponse aures=new AuthResponse(token, user.getRole().name());
+    	
+        log.info("admin login successfull");
     	return new ResponseEntity<>(aures,HttpStatus.OK);
     }
 
     public AuthResponse loginRecycler(UserLoginRequest request) {
 
         Recycler recycler = recyclerRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Recycler not found"));
+                .orElseThrow(() -> new UserNotFoundException("Recycler not found"));
 
         if (!encoder.matches(request.getPassword(), recycler.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            log.error("invalid password");
+            throw new InvalidPasswordException("Invalid password");
         }
 
         String token = jwtUtil.generateToken(
                 recycler.getEmail(),
-                "RECYCLER",
-                "RECYCLER"
+                Role.RECYCLER.name()
         );
 
-        return new AuthResponse(token, "RECYCLER", "RECYCLER");
+        log.info("recycler login successfull");
+        return new AuthResponse(token, "RECYCLER");
     }
 
     
     public AuthResponse loginCollector(UserLoginRequest request) {
 
         Collector collector = collectorRepo.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Collector not found"));
+                .orElseThrow(() -> new UserNotFoundException("Collector not found"));
 
         if (!encoder.matches(request.getPassword(), collector.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            log.error("invalid password");
+            throw new InvalidPasswordException("Invalid password");
         }
 
         String token = jwtUtil.generateToken(
                 collector.getEmail(),
-                "COLLECTOR",
-                "COLLECTOR"
+                Role.COLLECTOR.name()
         );
 
-        return new AuthResponse(token, "COLLECTOR", "COLLECTOR");
+        log.info("collector login successfull");
+        return new AuthResponse(token, "COLLECTOR");
     }
 }

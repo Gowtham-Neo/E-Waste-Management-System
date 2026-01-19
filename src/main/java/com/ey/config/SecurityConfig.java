@@ -27,11 +27,12 @@ public class SecurityConfig {
         http
         	.csrf(c->c.disable())
             .authorizeHttpRequests(auth -> auth
+            	
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/recycler/**").hasRole("RECYCLER")
                 .requestMatchers("/collector/**").hasRole("COLLECTOR")
-
+                .requestMatchers("/user/**").hasAnyRole("BUYER","SELLER")
                 .anyRequest().authenticated()
             );
 

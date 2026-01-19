@@ -3,20 +3,36 @@ package com.ey.dto.request.user;
 import com.ey.enums.Role;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public class RegisterUserRequest {
 
+	@NotBlank(message= "organizationName is required")
 	private String organizationName;
 	
+	@NotBlank(message= "name is required")
 	private String name;
 	
-	@Column(nullable=false, unique=true)
+	@Column(unique=true,nullable = false)
+	@NotBlank(message= "email is required")
+	@Email(message="Invlaid email id")
 	private String email;
 	
+	@NotBlank(message= "password is required")
 	private String password;
 	
+	@Column(unique=true,nullable = false)
+	@NotBlank(message="mobileNumber is required")
+	@Pattern(regexp = "^[6-9]\\d{9}$",message = "Invalid mobile number")
 	private String mobileNumber;
 	
+	@NotNull(message="role is required")
+	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	public String getOrganizationName() {

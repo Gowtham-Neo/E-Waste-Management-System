@@ -1,15 +1,23 @@
 package com.ey.dto.request;
 
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class RegisterCollectorRequest {
 
-	@Column(unique=true, nullable=false)
+	@NotBlank(message="email is required")
+	@Email(message="invalid email id")
 	private String email;
+	
+	@NotBlank(message="password is required")
 	private String password;
 	
+	@NotBlank(message="mobileNumber is required")
+	@Pattern(regexp = "^[6-9]\\d{9}$",message = "Invalid mobile number")
 	private String mobileNumber;
 	
+	@NotBlank(message="vehicleNumber is required")
 	private String vehicleNumber;
 
 	public String getEmail() {

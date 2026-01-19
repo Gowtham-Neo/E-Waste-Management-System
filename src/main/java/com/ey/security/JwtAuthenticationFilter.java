@@ -37,13 +37,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             Claims claims = jwtUtil.extractClaims(token);
 
-            String subject = claims.getSubject();
-            String principalType = claims.get("principalType", String.class);
-
-            String compoundKey = principalType + ":" + subject;
-
+            String email = claims.getSubject();
+            String role= claims.get("role", String.class);
             UserDetails userDetails =
-                    userDetailsService.loadUserByUsername(compoundKey);
+                    userDetailsService.loadUserByUsername(email);
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
@@ -52,6 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            
         }
 
         chain.doFilter(request, response);

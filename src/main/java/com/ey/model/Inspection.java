@@ -9,6 +9,8 @@ import com.ey.enums.ModelType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,19 +28,19 @@ public class Inspection {
 	private String brand;
 	
 	private String modelName;
-	
+	@Enumerated(EnumType.STRING)
 	private ModelType type;
 	
 	private Integer manufatureYear;
-	
+	@Enumerated(EnumType.STRING)
 	private ConditionGrading conditionGrade;
-	
+	@Enumerated(EnumType.STRING)
 	private FunctionalStatus status;
 	
 	private Double estimatedRepairCost;
 	
 	private Double currentMarketValue;
-	
+	@Enumerated(EnumType.STRING)
 	private	DisposalStatus decision;
 	
 	private LocalDate inspectedAt;

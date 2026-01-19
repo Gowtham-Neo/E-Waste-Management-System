@@ -2,6 +2,8 @@ package com.ey.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class RefurbishProductsService {
 
 	@Autowired
 	private RefurbishProductsRepository prodRepo;
+	
+	Logger log = LoggerFactory.getLogger(RefurbishProductsService.class);
+
 
 	public ResponseEntity<?> getAllRefubishProducts() {
 
@@ -30,6 +35,7 @@ public class RefurbishProductsService {
 		if (products.size()==0) {
 			return new ResponseEntity<>("NO products available to list",HttpStatus.NO_CONTENT);
 		}
+		log.info("all products fetch is successfull");
 		return new ResponseEntity<>(products,HttpStatus.OK);
 	}
 	public ResponseEntity<?> getproductsById(Long id) {
@@ -37,6 +43,7 @@ public class RefurbishProductsService {
 		RefurbishProducts product=prodRepo.findById(id)
 											.orElseThrow(()-> new ProductNotFoundException("INvalid Product Id"));
 		
+		log.info("Products fetch by id is successfull");
 		return new ResponseEntity<>(RefurbishProductsMapper.toResponse(product, "Ready for Sale"),HttpStatus.OK);
 	}
 	
@@ -48,6 +55,7 @@ public class RefurbishProductsService {
 		
 		prodRepo.save(product);
 		
+		log.info("Quantity Updated Successfully");
 		return new ResponseEntity<>(RefurbishProductsMapper.toResponse(product, "Quantity Updated Successfully"),HttpStatus.ACCEPTED);
 	}
 }

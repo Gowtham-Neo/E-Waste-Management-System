@@ -2,15 +2,24 @@ package com.ey.dto.request;
 
 import com.ey.enums.HazardLevel;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class AddCatagory {
 	
-		
+	@NotBlank(message = "Name is required")
 	private String name;
 	
+	@NotNull(message = "Level is required")
+	@Enumerated(EnumType.STRING)
 	private HazardLevel level;
 	
-	private boolean refurbishable;
+	@NotNull(message = "refurbishable is required")
+	private Boolean refurbishable;
 	
+	@NotBlank(message = "Rules is required")
 	private String handlingRules;
 
 	public String getName() {

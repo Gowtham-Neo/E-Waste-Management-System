@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ey.dto.request.UpdateRefurbishProducts;
 import com.ey.service.RefurbishProductsService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class RefurbishProductsController {
@@ -32,8 +34,36 @@ public class RefurbishProductsController {
 		return prodService.getproductsById(id);
 	}
 	
-	@PutMapping("/user/product/{id}")
-	public ResponseEntity<?> updateproductsById(@RequestBody UpdateRefurbishProducts req,@PathVariable("id") Long id){
+	
+	@GetMapping("/admin/products")
+	public ResponseEntity<?> getAllRefubishProductsByADmin(){
+		return prodService.getAllRefubishProducts();
+	}
+	
+	
+	@GetMapping("/admin/product/{id}")
+	public ResponseEntity<?> getproductsByIdByADmin(@PathVariable("id") Long id){
+		return prodService.getproductsById(id);
+	}
+	
+	@PutMapping("/admin/product/{id}")
+	public ResponseEntity<?> updateproductsByIdByAdmin(@Valid @RequestBody UpdateRefurbishProducts req,@PathVariable("id") Long id){
+		return prodService.updateproductsById(req,id);
+	}
+	
+	@GetMapping("/recycler/products")
+	public ResponseEntity<?> getAllRefubishProductsByRecycler(){
+		return prodService.getAllRefubishProducts();
+	}
+	
+	
+	@GetMapping("/recycler/product/{id}")
+	public ResponseEntity<?> getproductsByIdByRecycler(@PathVariable("id") Long id){
+		return prodService.getproductsById(id);
+	}
+	
+	@PutMapping("/recycler/product/{id}")
+	public ResponseEntity<?> updateproductsByIdAdmin(@Valid @RequestBody UpdateRefurbishProducts req,@PathVariable("id") Long id){
 		return prodService.updateproductsById(req,id);
 	}
 	

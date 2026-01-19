@@ -25,12 +25,10 @@ public class JwtUtil {
 		}
 		
 	    public String generateToken(String subject,
-	                                String principalType,
 	                                String role) {
 
 	        return Jwts.builder()
 	                .setSubject(subject)
-	                .claim("principalType", principalType)
 	                .claim("role", role)
 	                .setIssuedAt(new Date())
 	                .setExpiration(new Date(System.currentTimeMillis() + jwtexpier))

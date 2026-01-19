@@ -1,10 +1,16 @@
 package com.ey.dto.request.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class UserLoginRequest {
 
-	
+	@NotBlank(message= "email is required")
+	@Email(message="Invlaid email id")
+	@Email
 	private String email;
 	
+	@NotBlank(message= "password is required")
 	private String password;
 	
 	

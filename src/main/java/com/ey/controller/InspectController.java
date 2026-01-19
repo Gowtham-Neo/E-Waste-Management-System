@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ey.dto.request.CreateInspectRequest;
 import com.ey.service.InspectService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class InspectController {
@@ -25,12 +27,12 @@ public class InspectController {
 	
 
 	@PostMapping("/recycler/dispose/{disposeId}/inspect")
-	public ResponseEntity<?> inspectDispose(@RequestBody CreateInspectRequest req,@PathVariable Long disposeId,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> inspectDispose(@Valid @RequestBody CreateInspectRequest req,@PathVariable Long disposeId,@RequestHeader("Authorization") String token){
 		return inspectrService.inspectDispose(req,disposeId,token);
 	}
 	
 	@PutMapping("/recycler/inspect/{id}")
-	public ResponseEntity<?> updateinspectDispose(@RequestBody CreateInspectRequest req,@PathVariable Long id,@RequestHeader("Authorization") String token){
+	public ResponseEntity<?> updateinspectDispose(@Valid @RequestBody CreateInspectRequest req,@PathVariable Long id,@RequestHeader("Authorization") String token){
 		return inspectrService.updateinspectDispose(req,id,token);
 	}
 	@DeleteMapping("/recycler/inspect/{id}")

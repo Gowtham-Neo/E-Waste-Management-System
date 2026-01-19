@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ey.dto.request.AddCatagory;
 import com.ey.dto.request.UpdateMaterialsRequest;
-import com.ey.model.RecycledMaterials;
 import com.ey.service.AdminService;
 import com.ey.service.DisposeService;
 import com.ey.service.InspectService;
 import com.ey.service.OrderService;
 import com.ey.service.RecycledMaterialsService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping
@@ -103,12 +104,12 @@ public class AdminController {
 	
 	
 	@PostMapping("/admin/catagory")
-	public ResponseEntity<?> addCatagory(@RequestBody AddCatagory req){
+	public ResponseEntity<?> addCatagory(@Valid @RequestBody AddCatagory req){
 		
 		return adminService.addCatagory(req);
 	}
 	@PutMapping("/admin/catagory/{id}")
-	public ResponseEntity<?> updateCatagory(@RequestBody AddCatagory req,@PathVariable("id") Long id){
+	public ResponseEntity<?> updateCatagory(@Valid @RequestBody AddCatagory req,@PathVariable("id") Long id){
 		
 		return adminService.updateCatagory(req,id);
 	}
@@ -188,7 +189,7 @@ public class AdminController {
 	
 	
 	@PutMapping("/admin/material/{id}")
-	public ResponseEntity<?> updateMaterials(@RequestBody UpdateMaterialsRequest req,@PathVariable("id") Long id){
+	public ResponseEntity<?> updateMaterials(@Valid @RequestBody UpdateMaterialsRequest req,@PathVariable("id") Long id){
 		return materialsService.updateMaterial(req,id);
 	}
 	@GetMapping("/admin/materials")

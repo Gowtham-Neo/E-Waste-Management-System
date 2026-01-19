@@ -1,15 +1,30 @@
 package com.ey.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class AddMaterialsRequest {
 
 	
 
-	
+	@NotBlank(message = "Material type is required")
 	private String materialType;
+	
+	@NotNull(message = "weight is required")
+	@Positive(message =" weight must be in positive")
 	private Double weightInKg;
+	
+	@NotNull(message = "hazardous is required")
 	private Boolean hazardous;
+	
+	@NotBlank(message = "recoveryMethod type is required")
 	private String recoveryMethod;
+	
+	@NotNull(message = "estimated value is required")
+	@Positive(message ="estimated value must be in positive")
 	private Double estimatedValue;
+	
 	public String getMaterialType() {
 		return materialType;
 	}

@@ -1,5 +1,6 @@
 package com.ey.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,12 +16,15 @@ public class Collector {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+	@Column(unique=true,nullable = false)
 	private String email;
+	
 	private String password;
 	
+	@Column(unique=true,nullable = false)
 	private String mobileNumber;
 	
+	@Column(unique=true,nullable = false)
 	private String vehicleNumber;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

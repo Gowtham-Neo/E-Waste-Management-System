@@ -16,6 +16,8 @@ import com.ey.dto.request.AssignCollectorRequest;
 import com.ey.dto.request.recycler.DisposeRequest;
 import com.ey.service.DisposeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class DisposeController {
@@ -38,13 +40,13 @@ public class DisposeController {
 	}
 	
 	@PutMapping("/user/dispose/{id}")
-	public ResponseEntity<?>updatedisposeProducts(@RequestBody DisposeRequest req,@PathVariable("id") Long id,@RequestHeader("Authorization") String token)
+	public ResponseEntity<?>updatedisposeProducts(@Valid @RequestBody DisposeRequest req,@PathVariable("id") Long id,@RequestHeader("Authorization") String token)
 	{ 
 		return disposeService.updateDisposeProduct(req,id,token); 
 	}
 	  
 	@DeleteMapping("/user/dispose/{id}") 
-	public ResponseEntity<?>deletedisposeProducts(@PathVariable("id") Long id,@RequestHeader("Authorization") String token){ 
+	public ResponseEntity<?>deletedisposeProducts(@Valid @PathVariable("id") Long id,@RequestHeader("Authorization") String token){ 
 		 
 		return disposeService.deleteDisposeProduct(id,token);
 	}
@@ -54,8 +56,8 @@ public class DisposeController {
 	
 	
 	@PutMapping("/recycler/dispose/{id}/assign")
-	public ResponseEntity<?> assignCollector(@RequestBody AssignCollectorRequest req,@PathVariable("id") Long id){
-		return disposeService.assignCollector(req,id);
+	public ResponseEntity<?> assignCollector(@Valid @RequestBody AssignCollectorRequest req,@PathVariable("id") Long id,@RequestHeader("Authorization") String token){
+		return disposeService.assignCollector(req,id,token);
 	}
 
 	

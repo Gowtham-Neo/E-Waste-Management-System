@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ey.dto.request.CreateOrderRequest;
 import com.ey.service.OrderService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class OrderController {
@@ -21,13 +23,13 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-	@PostMapping("/user/order/product/{id}")
-	public ResponseEntity<?> orderRequest(@RequestBody CreateOrderRequest req,@PathVariable("id") Long id,
+	@PostMapping("/user/product/{id}/order")
+	public ResponseEntity<?> orderRequest(@Valid @RequestBody CreateOrderRequest req,@PathVariable("id") Long id,
 			@RequestHeader("Authorization") String token){
 		return orderService.orderRequest(req,id,token);
 	}
 	@PutMapping("/user/order/{id}")
-	public ResponseEntity<?> updateorderRequest(@RequestBody CreateOrderRequest req,@PathVariable("id") Long id,
+	public ResponseEntity<?> updateorderRequest(@Valid @RequestBody CreateOrderRequest req,@PathVariable("id") Long id,
 			@RequestHeader("Authorization") String token){
 		return orderService.updateorderRequest(req,id,token);
 	}
