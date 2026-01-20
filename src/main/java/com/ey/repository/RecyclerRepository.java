@@ -11,5 +11,7 @@ import com.ey.model.User;
 @Repository
 public interface RecyclerRepository extends JpaRepository<Recycler,Long>{
 	Optional<Recycler> findByEmail(String email);
+	Optional<Recycler> findByLicenceNumber(String licenceNumber);
+	Optional<Recycler> findByMobileNumber(String mobileNumber);
 	
 }

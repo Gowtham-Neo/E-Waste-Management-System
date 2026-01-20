@@ -11,6 +11,7 @@ import com.ey.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 	Optional<User> findByEmail(String email);
+	Optional<User> findByMobileNumber(String mobileNumber);
 	Optional<User> findByRole(Role role);
 	
 }

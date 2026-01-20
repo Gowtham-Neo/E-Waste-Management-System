@@ -12,6 +12,8 @@ import com.ey.model.Collector;
 public interface CollectorRepository extends JpaRepository<Collector,Long>{
 
 	Optional<Collector> findByEmail(String email);
+	Optional<Collector> findByVehicleNumber(String vehicleNumber);
+	Optional<Collector> findByMobileNumber(String mobileNumber);
 	
 	List<Collector> findByRecyclerId(Long id);
 }

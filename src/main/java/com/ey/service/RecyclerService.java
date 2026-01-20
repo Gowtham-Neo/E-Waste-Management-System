@@ -50,6 +50,14 @@ public class RecyclerService {
 			log.error("email already registered");
             throw new UserAlreadyExsistsException("email already registered");
 		}
+		if (recyclerRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
+		if (recyclerRepo.findByLicenceNumber(req.getLicenceNumber()).isPresent()){
+			log.error("Licence number already registered");
+			throw new UserAlreadyExsistsException("Licence number already registered");
+		}
 		Recycler recycler = RecyclerMapper.toEntity(req);
 
 		recycler.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -77,6 +85,14 @@ public class RecyclerService {
 		if (recyclerRepo.findByEmail(req.getEmail()).isPresent()){
 			log.error("email already registered");
             throw new UserAlreadyExsistsException("email already registered");
+		}
+		if (recyclerRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
+		if (recyclerRepo.findByLicenceNumber(req.getLicenceNumber()).isPresent()){
+			log.error("Licence number already registered");
+			throw new UserAlreadyExsistsException("Licence number already registered");
 		}
 		recycler.setEmail(req.getEmail());
 		recycler.setMobileNumber(req.getMobileNumber());
@@ -132,6 +148,14 @@ public class RecyclerService {
 			log.error("email already registered");
             throw new UserAlreadyExsistsException("email already registered");
 		}
+		if (collectorRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
+		if (collectorRepo.findByVehicleNumber(req.getVehicleNumber()).isPresent()){
+			log.error("vehicle number already registered");
+			throw new UserAlreadyExsistsException("vehicle number already registered");
+		}
 
 		String email = jwtUtil.extractClaims(token.substring(7)).getSubject();
 
@@ -167,6 +191,14 @@ public class RecyclerService {
 		if (collectorRepo.findByEmail(req.getEmail()).isPresent()){
 			log.error("email already registered");
             throw new UserAlreadyExsistsException("email already registered");
+		}
+		if (collectorRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
+		if (collectorRepo.findByVehicleNumber(req.getVehicleNumber()).isPresent()){
+			log.error("Vehicle number already registered");
+			throw new UserAlreadyExsistsException("Vehicle number already registered");
 		}
 		coll.setEmail(req.getEmail());
 		coll.setMobileNumber(req.getMobileNumber());

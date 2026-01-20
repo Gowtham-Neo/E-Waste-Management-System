@@ -44,6 +44,10 @@ public class UserService {
 			log.error("email already registered");
             throw new UserAlreadyExsistsException("email already registered");
 		}
+		if (userRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
 		
 		if(req.getRole() == Role.ADMIN) {
 			if (userRepo.findByRole(Role.ADMIN).isPresent()) {
@@ -75,6 +79,14 @@ public class UserService {
 	public ResponseEntity<?> updateUser(UpdateUserDetailsRequest req, String token) {
 		
 		User user=userRepo.findByEmail(jwtUtil.extractSubject(token)).orElseThrow(()-> new UserNotFoundException("Invalid User."));
+		if (userRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
+		}
+		if (userRepo.findByMobileNumber(req.getMobileNumber()).isPresent()){
+			log.error("Mobile number already registered");
+			throw new UserAlreadyExsistsException("Mobile number already registered");
+		}
 		user.setEmail(req.getEmail());
 		user.setMobileNumber(req.getMobileNumber());
 		user.setName(req.getName());
