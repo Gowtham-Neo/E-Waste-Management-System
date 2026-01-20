@@ -16,6 +16,7 @@ import com.ey.dto.request.recycler.UpdateRecyclerDetailsRequest;
 import com.ey.dto.request.user.UserForgetPassordRequest;
 import com.ey.dto.request.user.UserResetPassordRequest;
 import com.ey.dto.response.CollectorResponse;
+import com.ey.exception.UserAlreadyExsistsException;
 import com.ey.exception.UserNotFoundException;
 import com.ey.mapper.CollectorMapper;
 import com.ey.mapper.RecyclerMapper;
@@ -45,6 +46,10 @@ public class RecyclerService {
 	Logger log = LoggerFactory.getLogger(RecyclerService.class);
 
 	public ResponseEntity<?> registerRecycler(RegisterRecyclerRequest req) {
+		if (recyclerRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
+		}
 		Recycler recycler = RecyclerMapper.toEntity(req);
 
 		recycler.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -69,6 +74,10 @@ public class RecyclerService {
 
 		Recycler recycler = recyclerRepo.findByEmail(jwtUtil.extractSubject(token))
 				.orElseThrow(() -> new UserNotFoundException("Invalid Recycler."));
+		if (recyclerRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
+		}
 		recycler.setEmail(req.getEmail());
 		recycler.setMobileNumber(req.getMobileNumber());
 		recycler.setOrganizationName(req.getOrganizationName());
@@ -118,6 +127,11 @@ public class RecyclerService {
 	
 	
 	public ResponseEntity<?> registerCollector(RegisterCollectorRequest req, String token) {
+		
+		if (collectorRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
+		}
 
 		String email = jwtUtil.extractClaims(token.substring(7)).getSubject();
 
@@ -149,6 +163,10 @@ public class RecyclerService {
 		if (recycler.getId() != coll.getRecycler().getId()) {
 			log.error("You can access other collector");
 			return new ResponseEntity<>("You can access other collector", HttpStatus.BAD_REQUEST);
+		}
+		if (collectorRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
 		}
 		coll.setEmail(req.getEmail());
 		coll.setMobileNumber(req.getMobileNumber());

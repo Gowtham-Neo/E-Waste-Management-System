@@ -39,6 +39,12 @@ public class UserService {
 
 	
 	public ResponseEntity<?> registerUser(RegisterUserRequest req){
+		
+		if (userRepo.findByEmail(req.getEmail()).isPresent()){
+			log.error("email already registered");
+            throw new UserAlreadyExsistsException("email already registered");
+		}
+		
 		if(req.getRole() == Role.ADMIN) {
 			if (userRepo.findByRole(Role.ADMIN).isPresent()) {
 				log.error("Admin already exists");
