@@ -72,7 +72,7 @@ public class CustomExceptionHandler {
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<Object> hanldeUserNotFoundException(UserNotFoundException ex){
 		
-		return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(ex.getMessage(),HttpStatus.UNAUTHORIZED);
 	}
 	@ExceptionHandler(InvalidPasswordException.class)
 	public ResponseEntity<Object> hanldeInvalidPasswordException(InvalidPasswordException ex){
@@ -94,7 +94,7 @@ public class CustomExceptionHandler {
         }
 
         return ResponseEntity
-                .status(HttpStatus.CONFLICT) // 409
+                .status(HttpStatus.CONFLICT)
                 .body(message);
     }
 

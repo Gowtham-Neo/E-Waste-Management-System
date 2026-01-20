@@ -1,13 +1,12 @@
 package com.ey.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.ey.exception.UserNotFoundException;
-import com.ey.model.Collector;
-import com.ey.model.Recycler;
 import com.ey.repository.CollectorRepository;
 import com.ey.repository.RecyclerRepository;
 import com.ey.repository.UserRepository;
@@ -15,17 +14,14 @@ import com.ey.repository.UserRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepo;
-    private final RecyclerRepository recyclerRepo;
-    private final CollectorRepository collectorRepo;
+	@Autowired
+    private UserRepository userRepo;
+	@Autowired
+    private RecyclerRepository recyclerRepo;
+	@Autowired
+    private CollectorRepository collectorRepo;
 
-    public CustomUserDetailsService(UserRepository userRepo,
-                                    RecyclerRepository recyclerRepo,
-                                    CollectorRepository collectorRepo) {
-        this.userRepo = userRepo;
-        this.recyclerRepo = recyclerRepo;
-        this.collectorRepo = collectorRepo;
-    }
+   
 
     @Override
     public UserDetails loadUserByUsername(String email) {
