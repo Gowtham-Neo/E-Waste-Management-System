@@ -79,7 +79,7 @@ public class OrderService {
 			log.error("Order has already been"+ order.getStatus()+" stage and cant change to updated");
 			return new ResponseEntity<>("Order has already been"+ order.getStatus()+" stage and cant change to updated",HttpStatus.BAD_REQUEST);
 		}
-		if (prod.getQuantity()<req.getQuantity()+order.getQuantity()) {
+		if (prod.getQuantity()<req.getQuantity()) {
 			log.error("insufficent Quantity to update, avaiable:"+prod.getQuantity());
 			return new ResponseEntity<>("insufficent Quantity to update, avaiable: "+prod.getQuantity(),HttpStatus.BAD_REQUEST);
 		}

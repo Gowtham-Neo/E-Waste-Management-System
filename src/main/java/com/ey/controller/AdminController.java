@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ey.dto.request.AddCatagory;
+import com.ey.dto.request.AddMaterialsRequest;
 import com.ey.dto.request.UpdateMaterialsRequest;
 import com.ey.service.AdminService;
 import com.ey.service.DisposeService;
@@ -199,6 +200,11 @@ public class AdminController {
 	@GetMapping("/admin/material/{id}")
 	public ResponseEntity<?> getMaterialById(@PathVariable("id") Long id){
 		return materialsService.getMaterialById(id);
+	}
+	
+	@PostMapping("/admin/inspect/{id}/material")
+	public ResponseEntity<?> addMaterials(@Valid @RequestBody AddMaterialsRequest req,@PathVariable("id") Long id){
+		return materialsService.addMaterials(req,id);
 	}
 	
 }
